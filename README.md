@@ -2,95 +2,89 @@
   <img src="assets/logo.png" width="120">
 </p>
 
-<h1 align="center">🌱 Selahu</h1>
-
-<p align="center">
-Who do you want to become today?
-</p>
-
 # 🌱 Selahu
 
-> *Who do you want to become today?*
+There are two ways to change your life.
 
-Selahu is an identity-based habit building app that helps people become the person they want to be through small daily actions.
+You can chase goals.
 
-Instead of simply tracking habits, Selahu asks a different question:
+Or you can become the kind of person who naturally achieves them.
 
-> **Who do you want to become today?**
+Selahu is built on the belief that lasting change begins with identity.
 
----
+Every workout is a vote for becoming an athlete.
+
+Every page you read is a vote for becoming a learner.
+
+Every line of code is a vote for becoming an engineer.
+
+Small actions, repeated daily, shape who you become.
+
+Instead of asking,
+
+> **"What did you do today?"**
+
+Selahu asks,
+
+> **"Who do you want to become today?"**
+
+Because when your identity changes, everything else follows.
+
+
 
 ## 🌳 The Idea
 
 Most habit apps track what you do.
 
-Selahu tracks **who you are becoming.**
+Selahu tracks **who you're becoming.**
 
-Every identity grows its own tree.
+Choose an identity.
 
-Every completed day waters that tree.
+Cast a vote every day through small actions.
 
-Small actions become lasting transformation.
+Watch your tree grow as your future self becomes your present self.
 
----
+
 
 ## ✨ Features
 
 ### 🌱 Free
 
 - Up to 3 identities
-- One growth tree per identity
-- Daily habit tracking
-- Daily check-ins
-- Progress visualization
+- One growth tree for each identity
+- Daily votes
+- Daily reflections
+- Visual growth journey
 
-### 🌳 Selahu Grove (Premium)
+### 🌳 Selahu Grove *(Premium)*
 
 - Unlimited identities
 - Unlimited growth trees
-- Advanced analytics
-- AI-powered coaching *(planned)*
+- Advanced insights
 - Exclusive themes *(planned)*
 
----
 
-## 🛠 Tech Stack
 
-- React Native
-- Expo
-- TypeScript
-- GitHub
-- Supabase *(coming soon)*
-- Stripe *(coming soon)*
+## 📖 Build in Public
 
----
+Selahu is being built completely in public.
 
-## 📖 Follow the Journey
+📷 **Instagram:** @selahu.app
 
-I'm building Selahu completely in public.
 
-Every milestone, lesson, success, and setback is documented on Instagram.
 
-📷 **Instagram:** @selahu.app 
+## 🌍 Vision
+
+🌱 Plant the identity.
+🗳️ Cast your daily votes.
+🌳 Watch yourself become.
 
 ---
 
-## 🌎 Vision
+Built with ❤️ by **Susanne Gabriela**
 
-Our lives change when our identity changes.
-
-Selahu exists to help people intentionally become who they want to be.
-
----
-
-Made with ❤️ by Susanne Gabriela
-
-
-🌐 Website
+🌐 **Website**
 https://selahu.com
 
-📷 Build in Public
+📷 **Instagram**
 https://instagram.com/selahu.app
-
-📩 Join the Waitlist
-https://selahu.com
