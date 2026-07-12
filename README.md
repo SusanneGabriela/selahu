@@ -10,7 +10,7 @@ Who do you want to become today?
 
 # 🌱 Selahu
 
-> **Who do you want to become today?**
+> *Who do you want to become today?*
 
 Selahu is an identity-based habit building app that helps people become the person they want to be through small daily actions.
 
