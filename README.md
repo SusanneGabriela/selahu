@@ -1,56 +1,96 @@
-# Welcome to your Expo app 👋
+<p align="center">
+  <img src="assets/logo.png" width="120">
+</p>
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<h1 align="center">🌱 Selahu</h1>
 
-## Get started
+<p align="center">
+Who do you want to become today?
+</p>
 
-1. Install dependencies
+# 🌱 Selahu
 
-   ```bash
-   npm install
-   ```
+> **Who do you want to become today?**
 
-2. Start the app
+Selahu is an identity-based habit building app that helps people become the person they want to be through small daily actions.
 
-   ```bash
-   npx expo start
-   ```
+Instead of simply tracking habits, Selahu asks a different question:
 
-In the output, you'll find options to open the app in a
+> **Who do you want to become today?**
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 🌳 The Idea
 
-## Get a fresh project
+Most habit apps track what you do.
 
-When you're ready, run:
+Selahu tracks **who you are becoming.**
 
-```bash
-npm run reset-project
-```
+Every identity grows its own tree.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Every completed day waters that tree.
 
-### Other setup steps
+Small actions become lasting transformation.
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+---
 
-## Learn more
+## ✨ Features
 
-To learn more about developing your project with Expo, look at the following resources:
+### 🌱 Free
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+- Up to 3 identities
+- One growth tree per identity
+- Daily habit tracking
+- Daily check-ins
+- Progress visualization
 
-## Join the community
+### 🌳 Selahu Grove (Premium)
 
-Join our community of developers creating universal apps.
+- Unlimited identities
+- Unlimited growth trees
+- Advanced analytics
+- AI-powered coaching *(planned)*
+- Exclusive themes *(planned)*
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+## 🛠 Tech Stack
+
+- React Native
+- Expo
+- TypeScript
+- GitHub
+- Supabase *(coming soon)*
+- Stripe *(coming soon)*
+
+---
+
+## 📖 Follow the Journey
+
+I'm building Selahu completely in public.
+
+Every milestone, lesson, success, and setback is documented on Instagram.
+
+📷 **Instagram:** @selahu.app 
+
+---
+
+## 🌎 Vision
+
+Our lives change when our identity changes.
+
+Selahu exists to help people intentionally become who they want to be.
+
+---
+
+Made with ❤️ by Susanne Gabriela
+
+
+🌐 Website
+https://selahu.com
+
+📷 Build in Public
+https://instagram.com/selahu.app
+
+📩 Join the Waitlist
+https://selahu.com
