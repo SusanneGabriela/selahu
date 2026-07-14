@@ -48,7 +48,7 @@ Watch your tree grow as your future self becomes your present self.
 
 ## ✨ Features
 
-### 🌱 Free
+### 🌱 Selahu Tree *(Free)*
 
 - Up to 3 identities
 - One growth tree for each identity
