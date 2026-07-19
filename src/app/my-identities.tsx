@@ -9,6 +9,7 @@ export default function MyIdentitiesScreen() {
       <Text style={styles.title}>🌱 My Identities</Text>
       <IdentityCard
         title={identity as string}
+        stage="🌱 Seed"
         votes={0}
       />
     </SafeAreaView>
@@ -24,5 +25,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: "700",
+  },
+  stage: {
+    marginTop: 8,
+    color: "#2E7D32",
+    fontWeight: "500",
   },
 });
