@@ -3,6 +3,24 @@ import { Pressable, SafeAreaView, StyleSheet, Text } from "react-native";
 
 export default function IdentityDetailScreen() {
   const [votes, setVotes] = useState(0);
+  let stage = "🌱 Seed";
+
+    if (votes >= 30) {
+    stage = "🌿 Sprout";
+    }
+
+    if (votes >= 100) {
+    stage = "🌳 Sapling";
+    }
+
+    if (votes >= 200) {
+    stage = "🌲 Young Tree";
+    }
+
+    if (votes >= 365) {
+    stage = "🌳 Tree";
+    }
+
   return (
     <SafeAreaView style={styles.container}>
     <Text style={styles.title}>
@@ -10,7 +28,7 @@ export default function IdentityDetailScreen() {
     </Text>
 
     <Text style={styles.stage}>
-        🌱 Seed
+    {stage}
     </Text>
 
     <Text style={styles.label}>
