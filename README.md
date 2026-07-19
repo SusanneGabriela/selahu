@@ -4,59 +4,36 @@
 
 # 🌱 Selahu
 
-There are two ways to change your life.
+## Who do you want to become today?
 
-You can chase goals.
+Selahu is an identity-based habit app built around one simple question:
 
-Or you can become the kind of person who naturally achieves them.
+**Who do you want to become today?**
 
-Selahu is built on the belief that lasting change begins with identity.
+Because every action is a vote for the person you're becoming.
+
+And every day is another chance to get a little closer.
 
 Every workout is a vote for becoming an athlete.
 
-Every page you read is a vote for becoming a learner.
+Every page is a vote for becoming a learner.
 
 Every line of code is a vote for becoming an engineer.
 
-Small actions, repeated daily, shape who you become.
-
-Instead of asking,
-
-> **"What did you do today?"**
-
-Selahu asks,
-
-> **"Who do you want to become today?"**
-
-Because when your identity changes, everything else follows.
-
-
-
-## 🌳 The Idea
-
-Most habit apps track what you do.
-
-Selahu tracks **who you're becoming.**
-
-Choose an identity.
-
-Cast a vote every day through small actions.
-
-Watch your tree grow as your future self becomes your present self.
-
+Every quality hour with your wife is a vote for becoming a great spouse.
 
 
 ## ✨ Features
 
-### 🌱 Selahu Tree *(Free)*
+### 🌱 Selahu Tree *(Free forever)*
 
-- Up to 3 identities
-- One growth tree for each identity
+- Two identities
+- Two growth trees
 - Daily votes
 - Daily reflections
-- Visual growth journey
+- Growth insights
 
-### 🌳 Selahu Grove *(Premium)*
+### 🌳 Selahu Grove *(€4.99/month)*
 
 - Unlimited identities
 - Unlimited growth trees
@@ -64,27 +41,28 @@ Watch your tree grow as your future self becomes your present self.
 - Exclusive themes *(planned)*
 
 
-
-## 📖 Build in Public
+## 📖 Building in Public
 
 Selahu is being built completely in public.
 
 📷 **Instagram:** @selahu.app
 
 
-
 ## 🌍 Vision
 
 🌱 Plant the identity.
+
 🗳️ Cast your daily votes.
+
 🌳 Watch yourself become.
 
----
+> *Built for those who want to leave their mark. Built to make the journey worthwhile.*
 
-Built with ❤️ by **Susanne Gabriela**
 
-🌐 **Website**
+Built by **Susanne Gabriela**
+
+🌐 **Website**  
 https://selahu.com
 
-📷 **Instagram**
+📷 **Instagram**  
 https://instagram.com/selahu.app
