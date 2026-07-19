@@ -36,7 +36,14 @@ export default function HomeScreen() {
 
         <Pressable
           style={styles.button}
-          onPress={() => router.push("/my-identities")}
+          onPress={() =>
+            router.push({
+              pathname: "/my-identities",
+              params: {
+                identity,
+              },
+            })
+          }
         >
           <Text style={styles.buttonText}>
             Continue
