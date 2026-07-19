@@ -12,7 +12,8 @@ Selahu is an identity-based habit app built around one simple question:
 
 Because every action is a vote for the person you're becoming.
 
-And every day is another chance to get a little closer.
+And every day is another chance to get just a little closer.
+
 
 Every workout is a vote for becoming an athlete.
 
