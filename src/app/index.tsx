@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import {
   Pressable,
@@ -33,7 +34,10 @@ export default function HomeScreen() {
           onChangeText={setIdentity}
         />
 
-        <Pressable style={styles.button}>
+        <Pressable
+          style={styles.button}
+          onPress={() => router.push("/my-identities")}
+        >
           <Text style={styles.buttonText}>
             Continue
           </Text>
