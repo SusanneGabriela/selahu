@@ -20,6 +20,7 @@ export type Identity = {
 type IdentityContextType = {
   identities: Identity[];
   addIdentity: (title: string) => void;
+  castVote: (id: string) => void;
 };
 
 const IdentityContext = createContext<IdentityContextType | undefined>(
@@ -36,7 +37,6 @@ export function IdentityProvider({
   useEffect(() => {
     async function fetchIdentities() {
       const saved = await loadIdentities();
-
       setIdentities(saved);
     }
 
@@ -62,11 +62,25 @@ export function IdentityProvider({
     setIdentities((previous) => [...previous, newIdentity]);
   }
 
+  function castVote(id: string) {
+    setIdentities((previous) =>
+      previous.map((identity) =>
+        identity.id === id
+          ? {
+              ...identity,
+              votes: identity.votes + 1,
+            }
+          : identity
+      )
+    );
+  }
+
   return (
     <IdentityContext.Provider
       value={{
         identities,
         addIdentity,
+        castVote,
       }}
     >
       {children}

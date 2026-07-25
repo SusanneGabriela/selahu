@@ -1,28 +1,36 @@
-import { router } from "expo-router";
 import { Pressable, StyleSheet, Text } from "react-native";
 
-type IdentityCardProps = {
+type Identity = {
+  id: string;
   title: string;
   stage: string;
   votes: number;
 };
 
+type IdentityCardProps = {
+  identity: Identity;
+  onPress: () => void;
+};
+
 export default function IdentityCard({
-  title,
-  stage,
-  votes,
+  identity,
+  onPress,
 }: IdentityCardProps) {
   return (
     <Pressable
       style={styles.card}
-      onPress={() => router.push("/identity-detail")}
+      onPress={onPress}
     >
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>
+        {identity.title}
+      </Text>
 
-      <Text style={styles.stage}>{stage}</Text>
+      <Text style={styles.stage}>
+        {identity.stage}
+      </Text>
 
       <Text style={styles.votes}>
-        {votes} votes today
+        {identity.votes} votes today
       </Text>
     </Pressable>
   );
@@ -30,7 +38,7 @@ export default function IdentityCard({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
     borderRadius: 16,
     padding: 20,
     marginTop: 24,
