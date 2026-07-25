@@ -54,7 +54,7 @@ export default function MyIdentitiesScreen() {
 
       <Pressable
         style={styles.addButton}
-        onPress={() => router.push("/")}
+        onPress={() => router.push("/new-identity")}
       >
         <Text style={styles.addButtonText}>
           + Add Identity
