@@ -6,18 +6,35 @@ import {
   StyleSheet,
   Text,
 } from "react-native";
+
 import IdentityCard from "../components/IdentityCard";
-import { saveIdentities } from "../services/storage";
+import {
+  loadIdentities,
+  saveIdentities,
+} from "../services/storage";
+
+type Identity = {
+  id: string;
+  title: string;
+  stage: string;
+  votes: number;
+};
 
 export default function MyIdentitiesScreen() {
-  const [identities, setIdentities] = useState([
-  {
-    id: "1",
-    title: "Software Engineer",
-    stage: "🌱 Seed",
-    votes: 0,
-  },
-]);
+  const [identities, setIdentities] = useState<Identity[]>([]);
+
+  useEffect(() => {
+    async function fetchIdentities() {
+      const saved = await loadIdentities();
+
+      if (saved.length > 0) {
+        setIdentities(saved);
+      }
+    }
+
+    fetchIdentities();
+  }, []);
+
   useEffect(() => {
     saveIdentities(identities);
   }, [identities]);
@@ -27,13 +44,13 @@ export default function MyIdentitiesScreen() {
       <Text style={styles.title}>🌱 My Identities</Text>
 
       {identities.map((identity) => (
-  <IdentityCard
-    key={identity.id}
-    title={identity.title}
-    stage={identity.stage}
-    votes={identity.votes}
-  />
-))}
+        <IdentityCard
+          key={identity.id}
+          title={identity.title}
+          stage={identity.stage}
+          votes={identity.votes}
+        />
+      ))}
 
       <Pressable
         style={styles.addButton}
@@ -57,12 +74,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: "700",
-  },
-
-  stage: {
-    marginTop: 8,
-    color: "#2E7D32",
-    fontWeight: "500",
+    marginBottom: 24,
   },
 
   addButton: {
