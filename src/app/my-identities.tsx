@@ -1,5 +1,4 @@
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -8,36 +7,10 @@ import {
 } from "react-native";
 
 import IdentityCard from "../components/IdentityCard";
-import {
-  loadIdentities,
-  saveIdentities,
-} from "../services/storage";
-
-type Identity = {
-  id: string;
-  title: string;
-  stage: string;
-  votes: number;
-};
+import { useIdentities } from "../hooks/useIdentities";
 
 export default function MyIdentitiesScreen() {
-  const [identities, setIdentities] = useState<Identity[]>([]);
-
-  useEffect(() => {
-    async function fetchIdentities() {
-      const saved = await loadIdentities();
-
-      if (saved.length > 0) {
-        setIdentities(saved);
-      }
-    }
-
-    fetchIdentities();
-  }, []);
-
-  useEffect(() => {
-    saveIdentities(identities);
-  }, [identities]);
+  const { identities } = useIdentities();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,9 +29,7 @@ export default function MyIdentitiesScreen() {
         style={styles.addButton}
         onPress={() => router.push("/new-identity")}
       >
-        <Text style={styles.addButtonText}>
-          + Add Identity
-        </Text>
+        <Text style={styles.addButtonText}>+ Add Identity</Text>
       </Pressable>
     </SafeAreaView>
   );
@@ -86,7 +57,7 @@ const styles = StyleSheet.create({
   },
 
   addButtonText: {
-    color: "white",
+    color: "#FFFFFF",
     fontSize: 18,
     fontWeight: "600",
   },
