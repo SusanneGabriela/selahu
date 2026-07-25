@@ -1,5 +1,5 @@
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -7,6 +7,7 @@ import {
   Text,
 } from "react-native";
 import IdentityCard from "../components/IdentityCard";
+import { saveIdentities } from "../services/storage";
 
 export default function MyIdentitiesScreen() {
   const [identities] = useState([
@@ -17,6 +18,9 @@ export default function MyIdentitiesScreen() {
     votes: 0,
   },
 ]);
+  useEffect(() => {
+    saveIdentities(identities);
+  }, [identities]);
 
   return (
     <SafeAreaView style={styles.container}>
