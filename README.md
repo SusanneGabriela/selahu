@@ -14,7 +14,6 @@ Because every action is a vote for the person you're becoming.
 
 And every day is another chance to get just a little closer.
 
-
 Every workout is a vote for becoming an athlete.
 
 Every page is a vote for becoming a learner.
@@ -23,24 +22,27 @@ Every line of code is a vote for becoming an engineer.
 
 Every quality hour with your wife is a vote for becoming a great spouse.
 
+---
 
 ## ✨ Features
 
 ### 🌱 Selahu Tree *(Free forever)*
 
-- Two identities
-- Two growth trees
-- Daily votes
+- Up to **3 identities**
+- A unique growth tree for each identity
+- Daily voting
 - Daily reflections
-- Growth insights
+- Basic growth insights
 
 ### 🌳 Selahu Grove *(€4.99/month)*
 
 - Unlimited identities
 - Unlimited growth trees
-- Advanced insights
-- Exclusive themes *(planned)*
+- Beautiful exclusive themes *(coming soon)*
+- Advanced insights and analytics
+- All future premium features
 
+---
 
 ## 📖 Building in Public
 
@@ -48,6 +50,7 @@ Selahu is being built completely in public.
 
 📷 **Instagram:** @selahu.app
 
+---
 
 ## 🌍 Vision
 
@@ -59,6 +62,7 @@ Selahu is being built completely in public.
 
 > *Built for those who want to leave their mark. Built to make the journey worthwhile.*
 
+---
 
 Built by **Susanne Gabriela**
 
