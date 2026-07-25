@@ -1,12 +1,10 @@
 import { router } from "expo-router";
 import {
-  Button,
   FlatList,
   Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
-  View,
 } from "react-native";
 
 import IdentityCard from "../components/IdentityCard";
@@ -18,13 +16,6 @@ export default function MyIdentitiesScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>My Identities</Text>
-
-      <Button
-        title="Go to Test"
-        onPress={() => router.push("/test")}
-      />
-
-      <View style={{ height: 16 }} />
 
       <FlatList
         data={identities}
@@ -61,17 +52,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     padding: 24,
   },
+
   title: {
     fontSize: 32,
     fontWeight: "700",
     marginBottom: 24,
   },
+
   emptyText: {
     fontSize: 16,
     color: "#777",
     textAlign: "center",
     marginTop: 40,
   },
+
   addButton: {
     backgroundColor: "#173F2A",
     padding: 18,
@@ -79,6 +73,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 16,
   },
+
   addButtonText: {
     color: "#FFFFFF",
     fontSize: 18,
