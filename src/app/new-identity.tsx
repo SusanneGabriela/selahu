@@ -1,15 +1,17 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import {
-    Pressable,
-    SafeAreaView,
-    StyleSheet,
-    Text,
-    TextInput,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
 } from "react-native";
+import { useIdentities } from "../context/IdentityContext";
 
 export default function NewIdentityScreen() {
   const [title, setTitle] = useState("");
+  const { addIdentity } = useIdentities();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -24,7 +26,12 @@ export default function NewIdentityScreen() {
 
       <Pressable
         style={styles.button}
-        onPress={() => router.back()}
+        onPress={() => {
+          if (!title.trim()) return;
+
+          addIdentity(title.trim());
+          router.back();
+        }}
       >
         <Text style={styles.buttonText}>Create</Text>
       </Pressable>

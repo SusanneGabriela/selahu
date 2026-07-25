@@ -1,5 +1,14 @@
 import { Stack } from "expo-router";
+import { IdentityProvider } from "../context/IdentityContext";
 
 export default function RootLayout() {
-  return <Stack screenOptions={{ headerShown: false }} />;
+  return (
+    <IdentityProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
+    </IdentityProvider>
+  );
 }

@@ -7,7 +7,7 @@ import {
 } from "react-native";
 
 import IdentityCard from "../components/IdentityCard";
-import { useIdentities } from "../hooks/useIdentities";
+import { useIdentities } from "../context/IdentityContext";
 
 export default function MyIdentitiesScreen() {
   const { identities } = useIdentities();
