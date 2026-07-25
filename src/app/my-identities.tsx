@@ -1,4 +1,5 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
+import { useState } from "react";
 import {
   Pressable,
   SafeAreaView,
@@ -8,17 +9,27 @@ import {
 import IdentityCard from "../components/IdentityCard";
 
 export default function MyIdentitiesScreen() {
-  const { identity } = useLocalSearchParams();
+  const [identities] = useState([
+  {
+    id: "1",
+    title: "Software Engineer",
+    stage: "🌱 Seed",
+    votes: 0,
+  },
+]);
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>🌱 My Identities</Text>
 
-      <IdentityCard
-        title={identity as string}
-        stage="🌱 Seed"
-        votes={0}
-      />
+      {identities.map((identity) => (
+  <IdentityCard
+    key={identity.id}
+    title={identity.title}
+    stage={identity.stage}
+    votes={identity.votes}
+  />
+))}
 
       <Pressable
         style={styles.addButton}
