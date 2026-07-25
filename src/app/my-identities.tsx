@@ -10,7 +10,7 @@ import IdentityCard from "../components/IdentityCard";
 import { saveIdentities } from "../services/storage";
 
 export default function MyIdentitiesScreen() {
-  const [identities] = useState([
+  const [identities, setIdentities] = useState([
   {
     id: "1",
     title: "Software Engineer",
