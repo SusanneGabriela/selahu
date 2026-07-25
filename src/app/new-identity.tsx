@@ -7,11 +7,17 @@ import {
   Text,
   TextInput,
 } from "react-native";
+
 import { useIdentities } from "../context/IdentityContext";
 
 export default function NewIdentityScreen() {
   const [title, setTitle] = useState("");
   const { addIdentity } = useIdentities();
+
+  function handleCreate() {
+    addIdentity(title);
+    router.back();
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -22,16 +28,12 @@ export default function NewIdentityScreen() {
         placeholder="Who do you want to become?"
         value={title}
         onChangeText={setTitle}
+        autoFocus
       />
 
       <Pressable
         style={styles.button}
-        onPress={() => {
-          if (!title.trim()) return;
-
-          addIdentity(title.trim());
-          router.back();
-        }}
+        onPress={handleCreate}
       >
         <Text style={styles.buttonText}>Create</Text>
       </Pressable>
@@ -42,7 +44,7 @@ export default function NewIdentityScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#FFFFFF",
     padding: 24,
   },
 
@@ -69,7 +71,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: "white",
+    color: "#FFFFFF",
     fontSize: 18,
     fontWeight: "600",
   },

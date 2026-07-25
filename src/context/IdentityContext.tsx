@@ -37,9 +37,7 @@ export function IdentityProvider({
     async function fetchIdentities() {
       const saved = await loadIdentities();
 
-      if (saved.length > 0) {
-        setIdentities(saved);
-      }
+      setIdentities(saved);
     }
 
     fetchIdentities();
@@ -50,9 +48,13 @@ export function IdentityProvider({
   }, [identities]);
 
   function addIdentity(title: string) {
+    const trimmed = title.trim();
+
+    if (!trimmed) return;
+
     const newIdentity: Identity = {
       id: Date.now().toString(),
-      title,
+      title: trimmed,
       stage: "🌱 Seed",
       votes: 0,
     };

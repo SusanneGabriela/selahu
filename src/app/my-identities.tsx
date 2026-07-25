@@ -1,5 +1,6 @@
 import { router } from "expo-router";
 import {
+  FlatList,
   Pressable,
   SafeAreaView,
   StyleSheet,
@@ -16,14 +17,36 @@ export default function MyIdentitiesScreen() {
     <SafeAreaView style={styles.container}>
       <Text style={styles.title}>🌱 My Identities</Text>
 
-      {identities.map((identity) => (
-        <IdentityCard
-          key={identity.id}
-          title={identity.title}
-          stage={identity.stage}
-          votes={identity.votes}
-        />
-      ))}
+      <FlatList
+        data={identities}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <Pressable
+            onPress={() =>
+              router.push({
+                pathname: "/identity-detail",
+                params: {
+                  id: item.id,
+                },
+              })
+            }
+          >
+            <IdentityCard
+              title={item.title}
+              stage={item.stage}
+              votes={item.votes}
+            />
+          </Pressable>
+        )}
+        ListEmptyComponent={
+          <Text style={styles.emptyText}>
+            You haven't created any identities yet.
+          </Text>
+        }
+        contentContainerStyle={{
+          paddingBottom: 24,
+        }}
+      />
 
       <Pressable
         style={styles.addButton}
@@ -48,12 +71,19 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
 
+  emptyText: {
+    fontSize: 16,
+    color: "#777",
+    textAlign: "center",
+    marginTop: 40,
+  },
+
   addButton: {
-    marginTop: 32,
     backgroundColor: "#173F2A",
     padding: 18,
     borderRadius: 16,
     alignItems: "center",
+    marginTop: 16,
   },
 
   addButtonText: {
