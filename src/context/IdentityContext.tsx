@@ -1,13 +1,13 @@
 import {
-    createContext,
-    ReactNode,
-    useContext,
-    useEffect,
-    useState,
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
 import {
-    loadIdentities,
-    saveIdentities,
+  loadIdentities,
+  saveIdentities,
 } from "../services/storage";
 
 export type Identity = {
@@ -19,13 +19,17 @@ export type Identity = {
 
 type IdentityContextType = {
   identities: Identity[];
-  addIdentity: (title: string) => void;
+  addIdentity: (
+    title: string,
+    vision?: string,
+    actions?: string[]
+  ) => void;
   castVote: (id: string) => void;
 };
 
-const IdentityContext = createContext<IdentityContextType | undefined>(
-  undefined
-);
+const IdentityContext = createContext<
+  IdentityContextType | undefined
+>(undefined);
 
 export function IdentityProvider({
   children,
@@ -47,7 +51,11 @@ export function IdentityProvider({
     saveIdentities(identities);
   }, [identities]);
 
-  function addIdentity(title: string) {
+  function addIdentity(
+    title: string,
+    vision?: string,
+    actions?: string[]
+  ) {
     const trimmed = title.trim();
 
     if (!trimmed) return;
@@ -59,7 +67,10 @@ export function IdentityProvider({
       votes: 0,
     };
 
-    setIdentities((previous) => [...previous, newIdentity]);
+    setIdentities((previous) => [
+      ...previous,
+      newIdentity,
+    ]);
   }
 
   function castVote(id: string) {

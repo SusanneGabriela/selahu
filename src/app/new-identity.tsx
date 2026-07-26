@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import { useState } from "react";
 import {
   FlatList,
@@ -9,6 +10,8 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { useIdentities } from "../context/IdentityContext";
+
 export default function NewIdentity() {
   const [step, setStep] = useState(1);
 
@@ -18,11 +21,19 @@ export default function NewIdentity() {
   const [action, setAction] = useState("");
   const [actions, setActions] = useState<string[]>([]);
 
+  const { addIdentity } = useIdentities();
+
   function addAction() {
     if (action.trim() === "") return;
 
-    setActions([...actions, action.trim()]);
+    setActions((previous) => [...previous, action.trim()]);
     setAction("");
+  }
+
+  function plantSeed() {
+    addIdentity(name, vision, actions);
+
+    router.replace("/my-identities");
   }
 
   return (
@@ -32,7 +43,9 @@ export default function NewIdentity() {
 
         {step === 1 && (
           <>
-            <Text style={styles.title}>Who do you want to become?</Text>
+            <Text style={styles.title}>
+              Who do you want to become?
+            </Text>
 
             <Text style={styles.subtitle}>
               Name the person you're becoming.
@@ -62,7 +75,9 @@ export default function NewIdentity() {
 
         {step === 2 && (
           <>
-            <Text style={styles.title}>Who is this person?</Text>
+            <Text style={styles.title}>
+              Who is this person?
+            </Text>
 
             <Text style={styles.subtitle}>
               Describe them in the present tense.
@@ -84,19 +99,24 @@ export default function NewIdentity() {
                 style={styles.secondaryButton}
                 onPress={() => setStep(1)}
               >
-                <Text style={styles.secondaryText}>Back</Text>
+                <Text style={styles.secondaryText}>
+                  Back
+                </Text>
               </Pressable>
 
               <Pressable
                 style={[
                   styles.button,
                   styles.flex,
-                  vision.trim() === "" && styles.buttonDisabled,
+                  vision.trim() === "" &&
+                    styles.buttonDisabled,
                 ]}
                 disabled={vision.trim() === ""}
                 onPress={() => setStep(3)}
               >
-                <Text style={styles.buttonText}>Continue</Text>
+                <Text style={styles.buttonText}>
+                  Continue
+                </Text>
               </Pressable>
             </View>
           </>
@@ -124,16 +144,22 @@ export default function NewIdentity() {
               style={styles.secondaryButton}
               onPress={addAction}
             >
-              <Text style={styles.secondaryText}>+ Add Action</Text>
+              <Text style={styles.secondaryText}>
+                + Add Action
+              </Text>
             </Pressable>
 
             <FlatList
               style={{ marginTop: 24 }}
               data={actions}
-              keyExtractor={(item, index) => `${item}-${index}`}
+              keyExtractor={(item, index) =>
+                `${item}-${index}`
+              }
               renderItem={({ item }) => (
                 <View style={styles.actionCard}>
-                  <Text style={styles.actionText}>✓ {item}</Text>
+                  <Text style={styles.actionText}>
+                    ✓ {item}
+                  </Text>
                 </View>
               )}
             />
@@ -143,25 +169,24 @@ export default function NewIdentity() {
                 style={styles.secondaryButton}
                 onPress={() => setStep(2)}
               >
-                <Text style={styles.secondaryText}>Back</Text>
+                <Text style={styles.secondaryText}>
+                  Back
+                </Text>
               </Pressable>
 
               <Pressable
                 style={[
                   styles.button,
                   styles.flex,
-                  actions.length === 0 && styles.buttonDisabled,
+                  actions.length === 0 &&
+                    styles.buttonDisabled,
                 ]}
                 disabled={actions.length === 0}
-                onPress={() => {
-                  console.log({
-                    name,
-                    vision,
-                    actions,
-                  });
-                }}
+                onPress={plantSeed}
               >
-                <Text style={styles.buttonText}>🌱 Plant Seed</Text>
+                <Text style={styles.buttonText}>
+                  🌱 Plant Seed
+                </Text>
               </Pressable>
             </View>
           </>
@@ -228,7 +253,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: "white",
+    color: "#FFFFFF",
     fontWeight: "600",
     fontSize: 18,
   },
@@ -259,7 +284,7 @@ const styles = StyleSheet.create({
   },
 
   actionCard: {
-    backgroundColor: "white",
+    backgroundColor: "#FFFFFF",
     borderRadius: 14,
     padding: 16,
     marginBottom: 12,
