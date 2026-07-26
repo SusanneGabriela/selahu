@@ -1,74 +1,77 @@
 import { router } from "expo-router";
 import { useState } from "react";
 import {
-  FlatList,
   Pressable,
+  SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useIdentities } from "../context/IdentityContext";
 
-export default function NewIdentity() {
+export default function NewIdentityScreen() {
+  const { addIdentity } = useIdentities();
+
   const [step, setStep] = useState(1);
 
   const [name, setName] = useState("");
   const [vision, setVision] = useState("");
-
   const [action, setAction] = useState("");
   const [actions, setActions] = useState<string[]>([]);
 
-  const { addIdentity } = useIdentities();
-
   function addAction() {
-    if (action.trim() === "") return;
+    const trimmed = action.trim();
 
-    setActions((previous) => [...previous, action.trim()]);
+    if (!trimmed) return;
+
+    setActions((previous) => [...previous, trimmed]);
     setAction("");
+  }
+
+  function removeAction(index: number) {
+    setActions((previous) =>
+      previous.filter((_, i) => i !== index)
+    );
   }
 
   function plantSeed() {
     addIdentity(name, vision, actions);
-
     router.replace("/my-identities");
   }
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.step}>Step {step} of 3</Text>
-
+      <ScrollView
+        contentContainerStyle={styles.content}
+        keyboardShouldPersistTaps="handled"
+      >
         {step === 1 && (
           <>
             <Text style={styles.title}>
               Who do you want to become?
             </Text>
 
-            <Text style={styles.subtitle}>
-              Name the person you're becoming.
-            </Text>
-
             <TextInput
               style={styles.input}
-              placeholder="e.g. Songwriter"
-              placeholderTextColor="#9CA3AF"
+              placeholder="Example: A Loving Wife"
               value={name}
               onChangeText={setName}
-              autoFocus
             />
 
             <Pressable
               style={[
                 styles.button,
-                name.trim() === "" && styles.buttonDisabled,
+                !name.trim() && styles.buttonDisabled,
               ]}
-              disabled={name.trim() === ""}
+              disabled={!name.trim()}
               onPress={() => setStep(2)}
             >
-              <Text style={styles.buttonText}>Continue</Text>
+              <Text style={styles.buttonText}>
+                Continue
+              </Text>
             </Pressable>
           </>
         )}
@@ -80,18 +83,15 @@ export default function NewIdentity() {
             </Text>
 
             <Text style={styles.subtitle}>
-              Describe them in the present tense.
+              Describe the person you want to become.
             </Text>
 
             <TextInput
-              style={[styles.input, styles.textArea]}
-              placeholder="I am someone who..."
-              placeholderTextColor="#9CA3AF"
+              style={styles.textArea}
               multiline
-              textAlignVertical="top"
+              placeholder="Write your vision..."
               value={vision}
               onChangeText={setVision}
-              autoFocus
             />
 
             <View style={styles.row}>
@@ -99,7 +99,7 @@ export default function NewIdentity() {
                 style={styles.secondaryButton}
                 onPress={() => setStep(1)}
               >
-                <Text style={styles.secondaryText}>
+                <Text style={styles.secondaryButtonText}>
                   Back
                 </Text>
               </Pressable>
@@ -107,11 +107,10 @@ export default function NewIdentity() {
               <Pressable
                 style={[
                   styles.button,
-                  styles.flex,
-                  vision.trim() === "" &&
+                  !vision.trim() &&
                     styles.buttonDisabled,
                 ]}
-                disabled={vision.trim() === ""}
+                disabled={!vision.trim()}
                 onPress={() => setStep(3)}
               >
                 <Text style={styles.buttonText}>
@@ -129,47 +128,55 @@ export default function NewIdentity() {
             </Text>
 
             <Text style={styles.subtitle}>
-              Add 2–5 actions that define this identity.
+              Add daily actions that shape this
+              identity.
             </Text>
 
-            <TextInput
-              style={styles.input}
-              placeholder="Write one song"
-              placeholderTextColor="#9CA3AF"
-              value={action}
-              onChangeText={setAction}
-            />
+            <View style={styles.actionRow}>
+              <TextInput
+                style={styles.actionInput}
+                placeholder="Example: Read 10 pages"
+                value={action}
+                onChangeText={setAction}
+              />
 
-            <Pressable
-              style={styles.secondaryButton}
-              onPress={addAction}
-            >
-              <Text style={styles.secondaryText}>
-                + Add Action
-              </Text>
-            </Pressable>
+              <Pressable
+                style={styles.addButton}
+                onPress={addAction}
+              >
+                <Text style={styles.addButtonText}>
+                  +
+                </Text>
+              </Pressable>
+            </View>
 
-            <FlatList
-              style={{ marginTop: 24 }}
-              data={actions}
-              keyExtractor={(item, index) =>
-                `${item}-${index}`
-              }
-              renderItem={({ item }) => (
-                <View style={styles.actionCard}>
-                  <Text style={styles.actionText}>
-                    ✓ {item}
+            {actions.map((item, index) => (
+              <View
+                key={index}
+                style={styles.actionCard}
+              >
+                <Text style={styles.actionText}>
+                  • {item}
+                </Text>
+
+                <Pressable
+                  onPress={() =>
+                    removeAction(index)
+                  }
+                >
+                  <Text style={styles.removeText}>
+                    Remove
                   </Text>
-                </View>
-              )}
-            />
+                </Pressable>
+              </View>
+            ))}
 
             <View style={styles.row}>
               <Pressable
                 style={styles.secondaryButton}
                 onPress={() => setStep(2)}
               >
-                <Text style={styles.secondaryText}>
+                <Text style={styles.secondaryButtonText}>
                   Back
                 </Text>
               </Pressable>
@@ -177,7 +184,6 @@ export default function NewIdentity() {
               <Pressable
                 style={[
                   styles.button,
-                  styles.flex,
                   actions.length === 0 &&
                     styles.buttonDisabled,
                 ]}
@@ -191,7 +197,7 @@ export default function NewIdentity() {
             </View>
           </>
         )}
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -203,49 +209,120 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    flex: 1,
-    paddingHorizontal: 28,
-    justifyContent: "center",
-  },
-
-  step: {
-    color: "#6B7280",
-    marginBottom: 12,
+    padding: 24,
+    paddingBottom: 60,
   },
 
   title: {
-    fontSize: 34,
+    fontSize: 30,
     fontWeight: "700",
-    color: "#1F2937",
-    marginBottom: 10,
+    color: "#173F2A",
+    marginBottom: 12,
   },
 
   subtitle: {
-    fontSize: 18,
-    color: "#6B7280",
-    marginBottom: 30,
-    lineHeight: 26,
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 20,
+    lineHeight: 24,
   },
 
   input: {
-    borderWidth: 1,
-    borderColor: "#D1D5DB",
+    backgroundColor: "#FFFFFF",
     borderRadius: 16,
     padding: 18,
     fontSize: 18,
-    backgroundColor: "white",
-    marginBottom: 16,
+    marginBottom: 24,
   },
 
   textArea: {
-    height: 180,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 18,
+    fontSize: 17,
+    minHeight: 180,
+    textAlignVertical: "top",
+    marginBottom: 24,
+  },
+
+  actionRow: {
+    flexDirection: "row",
+    marginBottom: 20,
+  },
+
+  actionInput: {
+    flex: 1,
+    backgroundColor: "#FFFFFF",
+    borderRadius: 16,
+    padding: 18,
+    fontSize: 17,
+    marginRight: 12,
+  },
+
+  addButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 16,
+    backgroundColor: "#173F2A",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  addButtonText: {
+    color: "#FFFFFF",
+    fontSize: 28,
+    fontWeight: "600",
+  },
+
+  actionCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  actionText: {
+    flex: 1,
+    fontSize: 16,
+    color: "#222",
+  },
+
+  removeText: {
+    color: "#C0392B",
+    fontWeight: "600",
+  },
+
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 24,
   },
 
   button: {
-    backgroundColor: "#2E6B42",
-    borderRadius: 16,
+    flex: 1,
+    backgroundColor: "#173F2A",
     paddingVertical: 18,
+    borderRadius: 16,
     alignItems: "center",
+    marginLeft: 10,
+  },
+
+  secondaryButton: {
+    flex: 1,
+    backgroundColor: "#E8ECE8",
+    paddingVertical: 18,
+    borderRadius: 16,
+    alignItems: "center",
+    marginRight: 10,
+  },
+
+  secondaryButtonText: {
+    color: "#173F2A",
+    fontWeight: "600",
+    fontSize: 16,
   },
 
   buttonDisabled: {
@@ -254,46 +331,7 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: "#FFFFFF",
-    fontWeight: "600",
-    fontSize: 18,
-  },
-
-  secondaryButton: {
-    borderWidth: 1,
-    borderColor: "#2E6B42",
-    borderRadius: 16,
-    paddingVertical: 18,
-    paddingHorizontal: 24,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  secondaryText: {
-    color: "#2E6B42",
-    fontWeight: "600",
-  },
-
-  row: {
-    flexDirection: "row",
-    gap: 12,
-    marginTop: 24,
-  },
-
-  flex: {
-    flex: 1,
-  },
-
-  actionCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 14,
-    padding: 16,
-    marginBottom: 12,
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
-  },
-
-  actionText: {
     fontSize: 17,
-    color: "#1F2937",
+    fontWeight: "600",
   },
 });

@@ -12,17 +12,20 @@ import {
 
 export type Identity = {
   id: string;
-  title: string;
-  stage: string;
+  name: string;
+  vision: string;
+  actions: string[];
   votes: number;
+  createdAt: string;
+  lastVotedDate?: string;
 };
 
 type IdentityContextType = {
   identities: Identity[];
   addIdentity: (
-    title: string,
-    vision?: string,
-    actions?: string[]
+    name: string,
+    vision: string,
+    actions: string[]
   ) => void;
   castVote: (id: string) => void;
 };
@@ -52,19 +55,22 @@ export function IdentityProvider({
   }, [identities]);
 
   function addIdentity(
-    title: string,
-    vision?: string,
-    actions?: string[]
+    name: string,
+    vision: string,
+    actions: string[]
   ) {
-    const trimmed = title.trim();
+    const trimmedName = name.trim();
 
-    if (!trimmed) return;
+    if (!trimmedName) return;
 
     const newIdentity: Identity = {
       id: Date.now().toString(),
-      title: trimmed,
-      stage: "🌱 Seed",
+      name: trimmedName,
+      vision: vision.trim(),
+      actions,
       votes: 0,
+      createdAt: new Date().toISOString(),
+      lastVotedDate: undefined,
     };
 
     setIdentities((previous) => [
@@ -74,15 +80,24 @@ export function IdentityProvider({
   }
 
   function castVote(id: string) {
+    const today = new Date().toDateString();
+
     setIdentities((previous) =>
-      previous.map((identity) =>
-        identity.id === id
-          ? {
-              ...identity,
-              votes: identity.votes + 1,
-            }
-          : identity
-      )
+      previous.map((identity) => {
+        if (identity.id !== id) {
+          return identity;
+        }
+
+        if (identity.lastVotedDate === today) {
+          return identity;
+        }
+
+        return {
+          ...identity,
+          votes: identity.votes + 1,
+          lastVotedDate: today,
+        };
+      })
     );
   }
 
