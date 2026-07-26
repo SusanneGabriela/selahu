@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  FlatList,
   Pressable,
   StyleSheet,
   Text,
@@ -14,6 +15,16 @@ export default function NewIdentity() {
   const [name, setName] = useState("");
   const [vision, setVision] = useState("");
 
+  const [action, setAction] = useState("");
+  const [actions, setActions] = useState<string[]>([]);
+
+  function addAction() {
+    if (action.trim() === "") return;
+
+    setActions([...actions, action.trim()]);
+    setAction("");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -21,20 +32,18 @@ export default function NewIdentity() {
 
         {step === 1 && (
           <>
-            <Text style={styles.title}>
-              Who do you want to become?
-            </Text>
+            <Text style={styles.title}>Who do you want to become?</Text>
 
             <Text style={styles.subtitle}>
               Name the person you're becoming.
             </Text>
 
             <TextInput
+              style={styles.input}
               placeholder="e.g. Songwriter"
               placeholderTextColor="#9CA3AF"
               value={name}
               onChangeText={setName}
-              style={styles.input}
               autoFocus
             />
 
@@ -53,31 +62,29 @@ export default function NewIdentity() {
 
         {step === 2 && (
           <>
-            <Text style={styles.title}>
-              Who is this person?
-            </Text>
+            <Text style={styles.title}>Who is this person?</Text>
 
             <Text style={styles.subtitle}>
               Describe them in the present tense.
             </Text>
 
             <TextInput
+              style={[styles.input, styles.textArea]}
               placeholder="I am someone who..."
               placeholderTextColor="#9CA3AF"
-              value={vision}
-              onChangeText={setVision}
-              style={[styles.input, styles.textArea]}
               multiline
               textAlignVertical="top"
+              value={vision}
+              onChangeText={setVision}
               autoFocus
             />
 
-            <View style={styles.buttonRow}>
+            <View style={styles.row}>
               <Pressable
                 style={styles.secondaryButton}
                 onPress={() => setStep(1)}
               >
-                <Text style={styles.secondaryButtonText}>Back</Text>
+                <Text style={styles.secondaryText}>Back</Text>
               </Pressable>
 
               <Pressable
@@ -98,20 +105,65 @@ export default function NewIdentity() {
         {step === 3 && (
           <>
             <Text style={styles.title}>
-              Coming Next 🌱
+              What does this person do consistently?
             </Text>
 
             <Text style={styles.subtitle}>
-              Soon you'll define the daily actions that make this identity
-              real.
+              Add 2–5 actions that define this identity.
             </Text>
+
+            <TextInput
+              style={styles.input}
+              placeholder="Write one song"
+              placeholderTextColor="#9CA3AF"
+              value={action}
+              onChangeText={setAction}
+            />
 
             <Pressable
               style={styles.secondaryButton}
-              onPress={() => setStep(2)}
+              onPress={addAction}
             >
-              <Text style={styles.secondaryButtonText}>Back</Text>
+              <Text style={styles.secondaryText}>+ Add Action</Text>
             </Pressable>
+
+            <FlatList
+              style={{ marginTop: 24 }}
+              data={actions}
+              keyExtractor={(item, index) => `${item}-${index}`}
+              renderItem={({ item }) => (
+                <View style={styles.actionCard}>
+                  <Text style={styles.actionText}>✓ {item}</Text>
+                </View>
+              )}
+            />
+
+            <View style={styles.row}>
+              <Pressable
+                style={styles.secondaryButton}
+                onPress={() => setStep(2)}
+              >
+                <Text style={styles.secondaryText}>Back</Text>
+              </Pressable>
+
+              <Pressable
+                style={[
+                  styles.button,
+                  styles.flex,
+                  actions.length === 0 && styles.buttonDisabled,
+                ]}
+                disabled={actions.length === 0}
+                onPress={() => {
+                  console.log({
+                    name,
+                    vision,
+                    actions,
+                  });
+                }}
+              >
+                <Text style={styles.buttonText}>🌱 Plant Seed</Text>
+              </Pressable>
+            </View>
           </>
         )}
       </View>
@@ -127,12 +179,11 @@ const styles = StyleSheet.create({
 
   content: {
     flex: 1,
-    justifyContent: "center",
     paddingHorizontal: 28,
+    justifyContent: "center",
   },
 
   step: {
-    fontSize: 14,
     color: "#6B7280",
     marginBottom: 12,
   },
@@ -147,7 +198,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 18,
     color: "#6B7280",
-    marginBottom: 36,
+    marginBottom: 30,
     lineHeight: 26,
   },
 
@@ -156,9 +207,9 @@ const styles = StyleSheet.create({
     borderColor: "#D1D5DB",
     borderRadius: 16,
     padding: 18,
-    fontSize: 20,
+    fontSize: 18,
     backgroundColor: "white",
-    marginBottom: 40,
+    marginBottom: 16,
   },
 
   textArea: {
@@ -167,8 +218,8 @@ const styles = StyleSheet.create({
 
   button: {
     backgroundColor: "#2E6B42",
-    paddingVertical: 18,
     borderRadius: 16,
+    paddingVertical: 18,
     alignItems: "center",
   },
 
@@ -178,13 +229,8 @@ const styles = StyleSheet.create({
 
   buttonText: {
     color: "white",
-    fontSize: 18,
     fontWeight: "600",
-  },
-
-  buttonRow: {
-    flexDirection: "row",
-    gap: 12,
+    fontSize: 18,
   },
 
   secondaryButton: {
@@ -192,18 +238,37 @@ const styles = StyleSheet.create({
     borderColor: "#2E6B42",
     borderRadius: 16,
     paddingVertical: 18,
-    paddingHorizontal: 28,
+    paddingHorizontal: 24,
     alignItems: "center",
     justifyContent: "center",
   },
 
-  secondaryButtonText: {
+  secondaryText: {
     color: "#2E6B42",
     fontWeight: "600",
-    fontSize: 16,
+  },
+
+  row: {
+    flexDirection: "row",
+    gap: 12,
+    marginTop: 24,
   },
 
   flex: {
     flex: 1,
+  },
+
+  actionCard: {
+    backgroundColor: "white",
+    borderRadius: 14,
+    padding: 16,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+  },
+
+  actionText: {
+    fontSize: 17,
+    color: "#1F2937",
   },
 });
