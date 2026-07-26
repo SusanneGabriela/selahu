@@ -1,21 +1,21 @@
 # Selahu 🌱
 
-## An app for becoming.
-
 > **Who do you want to become today?**
 
-Choose.
+## An app for becoming.
 
-Live.
+Selahu isn't a habit tracker.
 
-Reflect.
+It isn't a productivity app.
 
-Become.
+It isn't a to-do list.
 
---
+Selahu is a **daily practice of becoming**.
 
-## A glimpse of Selahu
+Choose who you want to become.
 
-<p align="center">
-  <img src="assets/app-flow.png" alt="Selahu app flow" width="900">
-</p>
+Define the few core actions that shape that identity.
+
+Live as that person today.
+
+Watch your tree grow patiently, in silence.
