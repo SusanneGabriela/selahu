@@ -23,23 +23,21 @@ export default function HomeScreen() {
       <View style={styles.content}>
         <Text style={styles.logo}>🌱</Text>
 
-        <Text style={styles.title}>
-          Selahu
-        </Text>
+        <Text style={styles.title}>Selahu</Text>
 
         <Text style={styles.subtitle}>
           Who do you want to become today?
         </Text>
 
-        <Tree votes={lifetimeVotes} />
+        <View style={styles.treeContainer}>
+          <Tree votes={lifetimeVotes} />
+        </View>
 
         <Pressable
           style={styles.button}
-          onPress={() => router.push("/my-identities")}
+          onPress={() => router.push("/journey")}
         >
-          <Text style={styles.buttonText}>
-            Begin Today's Journey
-          </Text>
+          <Text style={styles.buttonText}>Begin</Text>
         </Pressable>
       </View>
     </SafeAreaView>
@@ -68,23 +66,27 @@ const styles = StyleSheet.create({
     fontSize: 42,
     textAlign: "center",
     fontWeight: "600",
-    marginBottom: 12,
     color: "#173F2A",
+    marginBottom: 12,
   },
 
   subtitle: {
     fontSize: 20,
     textAlign: "center",
     color: "#555",
-    marginBottom: 12,
+    marginBottom: 36,
+  },
+
+  treeContainer: {
+    alignItems: "center",
+    marginBottom: 40,
   },
 
   button: {
     backgroundColor: "#173F2A",
-    padding: 18,
+    paddingVertical: 18,
     borderRadius: 16,
     alignItems: "center",
-    marginTop: 32,
   },
 
   buttonText: {

@@ -14,7 +14,7 @@ Selahu is a **daily practice of becoming**.
 
 Choose who you want to become.
 
-Define the few core actions that shape that identity.
+Define the core actions that shape that identity.
 
 Live as that person today.
 
