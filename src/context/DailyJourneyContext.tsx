@@ -1,21 +1,23 @@
 import {
-    createContext,
-    ReactNode,
-    useContext,
-    useState,
+  createContext,
+  ReactNode,
+  useContext,
+  useState,
 } from "react";
 
 export type DailyJourney = {
   started: boolean;
   completed: boolean;
-  identityId: string | null;
+  selectedIdentityId: string | null;
   reflection: string;
 };
 
 type DailyJourneyContextType = {
   journey: DailyJourney;
 
-  startJourney: (identityId: string) => void;
+  selectIdentity: (id: string) => void;
+
+  startJourney: () => void;
 
   setReflection: (text: string) => void;
 
@@ -36,17 +38,22 @@ export function DailyJourneyProvider({
   const [journey, setJourney] = useState<DailyJourney>({
     started: false,
     completed: false,
-    identityId: null,
+    selectedIdentityId: null,
     reflection: "",
   });
 
-  function startJourney(identityId: string) {
-    setJourney({
+  function selectIdentity(id: string) {
+    setJourney((previous) => ({
+      ...previous,
+      selectedIdentityId: id,
+    }));
+  }
+
+  function startJourney() {
+    setJourney((previous) => ({
+      ...previous,
       started: true,
-      completed: false,
-      identityId,
-      reflection: "",
-    });
+    }));
   }
 
   function setReflection(text: string) {
@@ -67,7 +74,7 @@ export function DailyJourneyProvider({
     setJourney({
       started: false,
       completed: false,
-      identityId: null,
+      selectedIdentityId: null,
       reflection: "",
     });
   }
@@ -76,6 +83,7 @@ export function DailyJourneyProvider({
     <DailyJourneyContext.Provider
       value={{
         journey,
+        selectIdentity,
         startJourney,
         setReflection,
         completeJourney,

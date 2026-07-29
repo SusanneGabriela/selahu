@@ -5,43 +5,74 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
+  View,
 } from "react-native";
 
-import IdentityCard from "../components/IdentityCard";
+import { COLORS } from "../constants/colors";
+import { TYPOGRAPHY } from "../constants/typography";
+import { useDailyJourney } from "../context/DailyJourneyContext";
 import { useIdentities } from "../context/IdentityContext";
 
 export default function MyIdentitiesScreen() {
   const { identities } = useIdentities();
+  const { selectIdentity } = useDailyJourney();
+
+  function handleSelect(id: string) {
+    selectIdentity(id);
+    router.push("/journey");
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>My Identities</Text>
+      <View style={styles.page}>
+        <Text style={styles.title}>My Identities</Text>
 
-      <FlatList
-        data={identities}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <IdentityCard
-            identity={item}
-            onPress={() => router.push(`/detail/${item.id}`)}
-          />
-        )}
-        ListEmptyComponent={
-          <Text style={styles.emptyText}>
-            You haven't created any identities yet.
+        <Text style={styles.subtitle}>
+          Choose the person you want to become today.
+        </Text>
+
+        <View style={styles.divider} />
+
+        <FlatList
+          data={identities}
+          keyExtractor={(item) => item.id}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.list}
+          renderItem={({ item }) => (
+            <Pressable
+              style={styles.card}
+              onPress={() => handleSelect(item.id)}
+            >
+              <Text style={styles.name}>
+                {item.name}
+              </Text>
+
+              <Text style={styles.vision}>
+                {item.vision || "No vision yet."}
+              </Text>
+
+              <Text style={styles.votes}>
+                {item.votes} vote{item.votes === 1 ? "" : "s"}
+              </Text>
+            </Pressable>
+          )}
+          ListEmptyComponent={
+            <Text style={styles.empty}>
+              You haven't created an identity yet.
+            </Text>
+          }
+        />
+
+        <View style={styles.divider} />
+
+        <Pressable
+          onPress={() => router.push("/new-identity")}
+        >
+          <Text style={styles.button}>
+            + Create Identity
           </Text>
-        }
-        contentContainerStyle={{
-          paddingBottom: 100,
-        }}
-      />
-
-      <Pressable
-        style={styles.addButton}
-        onPress={() => router.push("/new-identity")}
-      >
-        <Text style={styles.addButtonText}>+ Add Identity</Text>
-      </Pressable>
+        </Pressable>
+      </View>
     </SafeAreaView>
   );
 }
@@ -49,34 +80,68 @@ export default function MyIdentitiesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
-    padding: 24,
+    backgroundColor: COLORS.background,
+  },
+
+  page: {
+    flex: 1,
+    paddingHorizontal: 36,
+    paddingTop: 132,
   },
 
   title: {
-    fontSize: 32,
-    fontWeight: "700",
+    ...TYPOGRAPHY.hero,
+    color: COLORS.primary,
+    marginBottom: 16,
+  },
+
+  subtitle: {
+    ...TYPOGRAPHY.body,
+    color: COLORS.text,
+    marginBottom: 32,
+  },
+
+  divider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: COLORS.border,
     marginBottom: 24,
   },
 
-  emptyText: {
-    fontSize: 16,
-    color: "#777",
+  list: {
+    paddingBottom: 24,
+  },
+
+  card: {
+    marginBottom: 28,
+  },
+
+  name: {
+    ...TYPOGRAPHY.title,
+    color: COLORS.primary,
+    marginBottom: 8,
+  },
+
+  vision: {
+    ...TYPOGRAPHY.body,
+    color: COLORS.text,
+    marginBottom: 8,
+    lineHeight: 28,
+  },
+
+  votes: {
+    ...TYPOGRAPHY.label,
+    color: COLORS.secondaryText,
+  },
+
+  empty: {
+    ...TYPOGRAPHY.body,
+    color: COLORS.secondaryText,
     textAlign: "center",
     marginTop: 40,
   },
 
-  addButton: {
-    backgroundColor: "#173F2A",
-    padding: 18,
-    borderRadius: 16,
-    alignItems: "center",
-    marginTop: 16,
-  },
-
-  addButtonText: {
-    color: "#FFFFFF",
-    fontSize: 18,
-    fontWeight: "600",
+  button: {
+    ...TYPOGRAPHY.button,
+    color: COLORS.primary,
   },
 });

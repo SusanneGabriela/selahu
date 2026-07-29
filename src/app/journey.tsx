@@ -14,16 +14,18 @@ import { useIdentities } from "../context/IdentityContext";
 
 export default function JourneyScreen() {
   const { identities } = useIdentities();
-  const { startJourney } = useDailyJourney();
 
-  // Temporary: use the newest identity.
-  // Later this will come from the selected identity.
-  const identity = identities[identities.length - 1];
+  const { journey, startJourney } = useDailyJourney();
+
+  const identity = identities.find(
+    (item) => item.id === journey.selectedIdentityId
+  );
 
   function handleContinue() {
     if (!identity) return;
 
-    startJourney(identity.id);
+    startJourney();
+
     router.push("/reflection");
   }
 
@@ -31,16 +33,22 @@ export default function JourneyScreen() {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.page}>
-          <Text style={styles.title}>Today's Journey</Text>
+          <Text style={styles.title}>
+            No Identity Selected
+          </Text>
 
           <Text style={styles.vision}>
-            You haven't created an identity yet.
+            Go back and choose an identity first.
           </Text>
 
           <View style={styles.bottomDivider} />
 
-          <Pressable onPress={() => router.back()}>
-            <Text style={styles.button}>Go Back</Text>
+          <Pressable
+            onPress={() => router.replace("/my-identities")}
+          >
+            <Text style={styles.button}>
+              Choose Identity
+            </Text>
           </Pressable>
         </View>
       </SafeAreaView>
@@ -50,7 +58,9 @@ export default function JourneyScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.page}>
-        <Text style={styles.title}>Today's Journey</Text>
+        <Text style={styles.title}>
+          Today's Journey
+        </Text>
 
         <Text style={styles.vision}>
           {identity.vision || "No vision yet."}
@@ -58,7 +68,9 @@ export default function JourneyScreen() {
 
         <View style={styles.divider} />
 
-        <Text style={styles.sectionTitle}>Core Actions</Text>
+        <Text style={styles.sectionTitle}>
+          Core Actions
+        </Text>
 
         {(identity.actions ?? []).length > 0 ? (
           identity.actions.map((action, index) => (
