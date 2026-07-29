@@ -1,44 +1,86 @@
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
+import {
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import { COLORS } from "../constants/colors";
-import { SPACING } from "../constants/spacing";
 import { TYPOGRAPHY } from "../constants/typography";
+import { useDailyJourney } from "../context/DailyJourneyContext";
+import { useIdentities } from "../context/IdentityContext";
 
 export default function JourneyScreen() {
-  const identity = {
-    name: "Loving Partner",
-    vision:
-      "I make the people I love feel safe, seen and cherished.",
-    actions: [
-      "Listen fully",
-      "Express gratitude",
-      "Do one thoughtful act",
-    ],
-  };
+  const { identities } = useIdentities();
+  const { startJourney } = useDailyJourney();
+
+  // Temporary: use the newest identity.
+  // Later this will come from the selected identity.
+  const identity = identities[identities.length - 1];
+
+  function handleContinue() {
+    if (!identity) return;
+
+    startJourney(identity.id);
+    router.push("/reflection");
+  }
+
+  if (!identity) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.page}>
+          <Text style={styles.title}>Today's Journey</Text>
+
+          <Text style={styles.vision}>
+            You haven't created an identity yet.
+          </Text>
+
+          <View style={styles.bottomDivider} />
+
+          <Pressable onPress={() => router.back()}>
+            <Text style={styles.button}>Go Back</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.page}>
-        <Text style={styles.title}>{identity.name}</Text>
+        <Text style={styles.title}>Today's Journey</Text>
 
-        <View style={styles.visionContainer}>
-          <Text style={styles.vision}>{identity.vision}</Text>
-        </View>
-
-        <Text style={styles.label}>Core Actions</Text>
-
-        <View style={styles.actions}>
-          {identity.actions.map((action) => (
-            <Text key={action} style={styles.action}>
-              • {action}
-            </Text>
-          ))}
-        </View>
+        <Text style={styles.vision}>
+          {identity.vision || "No vision yet."}
+        </Text>
 
         <View style={styles.divider} />
 
-        <Pressable>
-          <Text style={styles.continue}>
+        <Text style={styles.sectionTitle}>Core Actions</Text>
+
+        {(identity.actions ?? []).length > 0 ? (
+          identity.actions.map((action, index) => (
+            <Text
+              key={`${action}-${index}`}
+              style={styles.habit}
+            >
+              • {action}
+            </Text>
+          ))
+        ) : (
+          <Text style={styles.habit}>
+            No actions yet.
+          </Text>
+        )}
+
+        <View style={{ flex: 1 }} />
+
+        <View style={styles.bottomDivider} />
+
+        <Pressable onPress={handleContinue}>
+          <Text style={styles.button}>
             Continue →
           </Text>
         </Pressable>
@@ -55,63 +97,49 @@ const styles = StyleSheet.create({
 
   page: {
     flex: 1,
-
     paddingHorizontal: 36,
-
-    paddingTop: 120,
+    paddingTop: 132,
   },
 
   title: {
     ...TYPOGRAPHY.hero,
-
     color: COLORS.primary,
-
-    marginBottom: SPACING.xl,
-  },
-
-  visionContainer: {
-    maxWidth: "88%",
+    marginBottom: 40,
   },
 
   vision: {
     ...TYPOGRAPHY.body,
-
     color: COLORS.text,
-
-    marginBottom: 80,
-  },
-
-  label: {
-    ...TYPOGRAPHY.label,
-
-    color: COLORS.secondaryText,
-
-    marginBottom: SPACING.lg,
-  },
-
-  actions: {
-    gap: 24,
-
-    marginBottom: 80,
-  },
-
-  action: {
-    ...TYPOGRAPHY.action,
-
-    color: COLORS.text,
+    marginBottom: 40,
+    lineHeight: 30,
   },
 
   divider: {
     height: StyleSheet.hairlineWidth,
-
     backgroundColor: COLORS.border,
-
-    marginBottom: SPACING.lg,
+    marginBottom: 32,
   },
 
-  continue: {
-    ...TYPOGRAPHY.button,
+  sectionTitle: {
+    ...TYPOGRAPHY.title,
+    color: COLORS.primary,
+    marginBottom: 20,
+  },
 
+  habit: {
+    ...TYPOGRAPHY.body,
+    color: COLORS.text,
+    marginBottom: 12,
+  },
+
+  bottomDivider: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: COLORS.border,
+    marginBottom: 24,
+  },
+
+  button: {
+    ...TYPOGRAPHY.button,
     color: COLORS.primary,
   },
 });
