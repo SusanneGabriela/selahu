@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const IDENTITIES_KEY = "identities";
+const SELECTED_IDENTITY_KEY = "selected_identity";
 
 export async function saveIdentities(identities: any[]) {
   try {
@@ -44,5 +45,42 @@ export async function loadIdentities() {
   } catch (error) {
     console.error("Failed to load identities:", error);
     return [];
+  }
+}
+
+export async function saveSelectedIdentity(
+  identityId: string | null
+) {
+  try {
+    if (identityId === null) {
+      await AsyncStorage.removeItem(
+        SELECTED_IDENTITY_KEY
+      );
+      return;
+    }
+
+    await AsyncStorage.setItem(
+      SELECTED_IDENTITY_KEY,
+      identityId
+    );
+  } catch (error) {
+    console.error(
+      "Failed to save selected identity:",
+      error
+    );
+  }
+}
+
+export async function loadSelectedIdentity() {
+  try {
+    return await AsyncStorage.getItem(
+      SELECTED_IDENTITY_KEY
+    );
+  } catch (error) {
+    console.error(
+      "Failed to load selected identity:",
+      error
+    );
+    return null;
   }
 }

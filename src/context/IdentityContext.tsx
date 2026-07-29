@@ -7,7 +7,9 @@ import {
 } from "react";
 import {
   loadIdentities,
+  loadSelectedIdentity,
   saveIdentities,
+  saveSelectedIdentity,
 } from "../services/storage";
 
 export type Identity = {
@@ -23,6 +25,7 @@ export type Identity = {
 type IdentityContextType = {
   identities: Identity[];
   selectedIdentityId: string | null;
+  selectedIdentity: Identity | undefined;
 
   addIdentity: (
     name: string,
@@ -33,8 +36,6 @@ type IdentityContextType = {
   castVote: (id: string) => void;
 
   selectIdentity: (id: string) => void;
-
-  selectedIdentity: Identity | undefined;
 };
 
 const IdentityContext = createContext<
@@ -51,17 +52,35 @@ export function IdentityProvider({
     useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchIdentities() {
-      const saved = await loadIdentities();
-      setIdentities(saved);
+    async function loadData() {
+      const savedIdentities = await loadIdentities();
+      const savedSelectedIdentity =
+        await loadSelectedIdentity();
+
+      setIdentities(savedIdentities);
+
+      if (
+        savedSelectedIdentity &&
+        savedIdentities.some(
+          (i) => i.id === savedSelectedIdentity
+        )
+      ) {
+        setSelectedIdentityId(savedSelectedIdentity);
+      } else if (savedIdentities.length > 0) {
+        setSelectedIdentityId(savedIdentities[0].id);
+      }
     }
 
-    fetchIdentities();
+    loadData();
   }, []);
 
   useEffect(() => {
     saveIdentities(identities);
   }, [identities]);
+
+  useEffect(() => {
+    saveSelectedIdentity(selectedIdentityId);
+  }, [selectedIdentityId]);
 
   const selectedIdentity = identities.find(
     (identity) => identity.id === selectedIdentityId
