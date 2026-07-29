@@ -10,12 +10,13 @@ import {
 
 import { COLORS } from "../constants/colors";
 import { TYPOGRAPHY } from "../constants/typography";
-import { useDailyJourney } from "../context/DailyJourneyContext";
 import { useIdentities } from "../context/IdentityContext";
 
 export default function MyIdentitiesScreen() {
-  const { identities } = useIdentities();
-  const { selectIdentity } = useDailyJourney();
+  const {
+    identities,
+    selectIdentity,
+  } = useIdentities();
 
   function handleSelect(id: string) {
     selectIdentity(id);
@@ -25,7 +26,9 @@ export default function MyIdentitiesScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.page}>
-        <Text style={styles.title}>My Identities</Text>
+        <Text style={styles.title}>
+          My Identities
+        </Text>
 
         <Text style={styles.subtitle}>
           Choose the person you want to become today.

@@ -13,23 +13,19 @@ import { useDailyJourney } from "../context/DailyJourneyContext";
 import { useIdentities } from "../context/IdentityContext";
 
 export default function JourneyScreen() {
-  const { identities } = useIdentities();
+  const { startJourney } = useDailyJourney();
 
-  const { journey, startJourney } = useDailyJourney();
-
-  const identity = identities.find(
-    (item) => item.id === journey.selectedIdentityId
-  );
+  const { selectedIdentity } = useIdentities();
 
   function handleContinue() {
-    if (!identity) return;
+    if (!selectedIdentity) return;
 
     startJourney();
 
     router.push("/reflection");
   }
 
-  if (!identity) {
+  if (!selectedIdentity) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.page}>
@@ -38,7 +34,7 @@ export default function JourneyScreen() {
           </Text>
 
           <Text style={styles.vision}>
-            Go back and choose an identity first.
+            Choose an identity before starting today's journey.
           </Text>
 
           <View style={styles.bottomDivider} />
@@ -62,8 +58,12 @@ export default function JourneyScreen() {
           Today's Journey
         </Text>
 
+        <Text style={styles.identityName}>
+          {selectedIdentity.name}
+        </Text>
+
         <Text style={styles.vision}>
-          {identity.vision || "No vision yet."}
+          {selectedIdentity.vision || "No vision yet."}
         </Text>
 
         <View style={styles.divider} />
@@ -72,8 +72,8 @@ export default function JourneyScreen() {
           Core Actions
         </Text>
 
-        {(identity.actions ?? []).length > 0 ? (
-          identity.actions.map((action, index) => (
+        {selectedIdentity.actions.length > 0 ? (
+          selectedIdentity.actions.map((action, index) => (
             <Text
               key={`${action}-${index}`}
               style={styles.habit}
@@ -116,7 +116,13 @@ const styles = StyleSheet.create({
   title: {
     ...TYPOGRAPHY.hero,
     color: COLORS.primary,
-    marginBottom: 40,
+    marginBottom: 16,
+  },
+
+  identityName: {
+    ...TYPOGRAPHY.title,
+    color: COLORS.primary,
+    marginBottom: 24,
   },
 
   vision: {

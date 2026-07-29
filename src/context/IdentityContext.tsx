@@ -22,12 +22,19 @@ export type Identity = {
 
 type IdentityContextType = {
   identities: Identity[];
+  selectedIdentityId: string | null;
+
   addIdentity: (
     name: string,
     vision: string,
     actions: string[]
   ) => void;
+
   castVote: (id: string) => void;
+
+  selectIdentity: (id: string) => void;
+
+  selectedIdentity: Identity | undefined;
 };
 
 const IdentityContext = createContext<
@@ -40,6 +47,8 @@ export function IdentityProvider({
   children: ReactNode;
 }) {
   const [identities, setIdentities] = useState<Identity[]>([]);
+  const [selectedIdentityId, setSelectedIdentityId] =
+    useState<string | null>(null);
 
   useEffect(() => {
     async function fetchIdentities() {
@@ -53,6 +62,14 @@ export function IdentityProvider({
   useEffect(() => {
     saveIdentities(identities);
   }, [identities]);
+
+  const selectedIdentity = identities.find(
+    (identity) => identity.id === selectedIdentityId
+  );
+
+  function selectIdentity(id: string) {
+    setSelectedIdentityId(id);
+  }
 
   function addIdentity(
     name: string,
@@ -77,6 +94,8 @@ export function IdentityProvider({
       ...previous,
       newIdentity,
     ]);
+
+    setSelectedIdentityId(newIdentity.id);
   }
 
   function castVote(id: string) {
@@ -105,8 +124,11 @@ export function IdentityProvider({
     <IdentityContext.Provider
       value={{
         identities,
+        selectedIdentityId,
+        selectedIdentity,
         addIdentity,
         castVote,
+        selectIdentity,
       }}
     >
       {children}
