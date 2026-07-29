@@ -7,8 +7,8 @@ import {
   View,
 } from "react-native";
 
-import Tree from "../components/Tree";
-import { useIdentities } from "../context/IdentityContext";
+import Tree from "../../components/Tree";
+import { useIdentities } from "../../context/IdentityContext";
 
 export default function HomeScreen() {
   const { identities } = useIdentities();
