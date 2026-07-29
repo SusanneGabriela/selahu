@@ -1,31 +1,64 @@
-import { Pressable, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { router } from "expo-router";
+import {
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import { COLORS } from "../constants/colors";
 import { TYPOGRAPHY } from "../constants/typography";
+import { useDailyJourney } from "../context/DailyJourneyContext";
+import { useIdentities } from "../context/IdentityContext";
 
-export default function TreeScreen() {
+export default function CompletionScreen() {
+  const { journey, completeJourney, resetJourney } = useDailyJourney();
+  const { identities, castVote } = useIdentities();
+
+  const identity = identities.find(
+    (i) => i.id === journey.selectedIdentityId
+  );
+
+  function handleDone() {
+    if (identity) {
+      castVote(identity.id);
+    }
+
+    completeJourney();
+    resetJourney();
+
+    router.replace("/");
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.page}>
         <Text style={styles.title}>
-          Today is complete.
+          Today is Complete
         </Text>
 
-        <View style={styles.treeContainer}>
-          <Text style={styles.tree}>
-            🌱
-          </Text>
-        </View>
+        <Text style={styles.emoji}>
+          🌱
+        </Text>
 
         <Text style={styles.message}>
+          {identity
+            ? `${identity.name} has grown a little stronger today.`
+            : "You showed up today."}
+        </Text>
+
+        <Text style={styles.quote}>
           Every small decision shapes the person you are becoming.
         </Text>
 
+        <View style={{ flex: 1 }} />
+
         <View style={styles.divider} />
 
-        <Pressable>
+        <Pressable onPress={handleDone}>
           <Text style={styles.button}>
-            See you tomorrow →
+            Return Home →
           </Text>
         </Pressable>
       </View>
@@ -41,59 +74,46 @@ const styles = StyleSheet.create({
 
   page: {
     flex: 1,
-
     paddingHorizontal: 36,
-
     paddingTop: 132,
-
-    alignItems: "center",
   },
 
   title: {
     ...TYPOGRAPHY.hero,
-
     color: COLORS.primary,
+    marginBottom: 40,
+  },
 
-    marginBottom: 80,
-
+  emoji: {
+    fontSize: 72,
     textAlign: "center",
-  },
-
-  treeContainer: {
-    flex: 1,
-
-    justifyContent: "center",
-  },
-
-  tree: {
-    fontSize: 96,
+    marginBottom: 32,
   },
 
   message: {
-    ...TYPOGRAPHY.body,
-
-    color: COLORS.text,
-
+    ...TYPOGRAPHY.title,
+    color: COLORS.primary,
     textAlign: "center",
+    marginBottom: 24,
+    lineHeight: 34,
+  },
 
-    maxWidth: 320,
-
-    marginBottom: 64,
+  quote: {
+    ...TYPOGRAPHY.body,
+    color: COLORS.text,
+    textAlign: "center",
+    lineHeight: 30,
   },
 
   divider: {
-    alignSelf: "stretch",
-
     height: StyleSheet.hairlineWidth,
-
     backgroundColor: COLORS.border,
-
-    marginBottom: 28,
+    marginBottom: 24,
   },
 
   button: {
     ...TYPOGRAPHY.button,
-
     color: COLORS.primary,
+    textAlign: "center",
   },
 });
