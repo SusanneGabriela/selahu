@@ -1,13 +1,31 @@
 export const Typography = {
-  title: 36,
+  hero: {
+    fontFamily: "CormorantBold",
+    fontSize: 44,
+  },
 
-  heading: 28,
+  title: {
+    fontFamily: "CormorantSemiBold",
+    fontSize: 34,
+  },
 
-  subheading: 22,
+  heading: {
+    fontFamily: "CormorantSemiBold",
+    fontSize: 24,
+  },
 
-  body: 17,
+  body: {
+    fontFamily: "CormorantRegular",
+    fontSize: 19,
+  },
 
-  caption: 14,
+  small: {
+    fontFamily: "CormorantRegular",
+    fontSize: 16,
+  },
 
-  button: 18,
+  button: {
+    fontFamily: "CormorantMedium",
+    fontSize: 18,
+  },
 };

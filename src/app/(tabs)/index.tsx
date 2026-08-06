@@ -1,95 +1,109 @@
 import { router } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import {
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
-import Button from "../../components/Button/Button";
-import Screen from "../../components/Screen/Screen";
+import Tree from "../../components/Tree";
+import { useIdentities } from "../../context/IdentityContext";
+
 import { Colors } from "../../theme/colors";
 import { Spacing } from "../../theme/spacing";
 import { Typography } from "../../theme/typography";
 
 export default function HomeScreen() {
+  const { identities } = useIdentities();
+
+  const lifetimeVotes = identities.reduce(
+    (total, identity) => total + identity.votes,
+    0
+  );
+
   return (
-    <Screen>
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.greeting}>
-            Good morning,
-          </Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.content}>
 
-          <Text style={styles.title}>
-            Who are you{"\n"}becoming today?
-          </Text>
+        <Text style={styles.greeting}>
+          Good Morning,
+        </Text>
+
+        <Text style={styles.name}>
+          Susanne
+        </Text>
+
+        <Text style={styles.subtitle}>
+          Who do you want to become today?
+        </Text>
+
+        <View style={styles.treeContainer}>
+          <Tree votes={lifetimeVotes} />
         </View>
 
-        <View style={styles.hero}>
-          <Text style={styles.heroEmoji}>🌄</Text>
-        </View>
-
-        <View style={styles.identitySection}>
-          <Text style={styles.identity}>
-            Musician
-          </Text>
-
-          <Text style={styles.vision}>
-            Compose one honest song.
-          </Text>
-        </View>
-
-        <Button
-          title="Begin Today"
+        <Pressable
+          style={styles.button}
           onPress={() => router.push("/journey")}
-        />
+        >
+          <Text style={styles.buttonText}>
+            Begin Today's Journey
+          </Text>
+        </Pressable>
+
       </View>
-    </Screen>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
-    justifyContent: "space-between",
+    backgroundColor: Colors.background,
+  },
+
+  content: {
+    flex: 1,
+    justifyContent: "center",
+    paddingHorizontal: Spacing.xl,
   },
 
   greeting: {
-    fontSize: Typography.body,
-    color: Colors.textSecondary,
-    marginTop: Spacing.md,
+    ...Typography.body,
+    color: Colors.secondary,
+    textAlign: "center",
   },
 
-  title: {
-    fontSize: Typography.title,
-    color: Colors.text,
-    fontWeight: "700",
-    lineHeight: 44,
-    marginTop: Spacing.sm,
-  },
-
-  hero: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: 280,
-  },
-
-  heroEmoji: {
-    fontSize: 100,
-  },
-
-  identitySection: {
-    alignItems: "center",
-    marginBottom: Spacing.xl,
-  },
-
-  identity: {
-    fontSize: 34,
-    fontWeight: "700",
+  name: {
+    ...Typography.hero,
     color: Colors.primary,
+    textAlign: "center",
     marginBottom: Spacing.sm,
   },
 
-  vision: {
-    fontSize: Typography.body,
-    color: Colors.textSecondary,
+  subtitle: {
+    ...Typography.body,
+    color: Colors.secondary,
     textAlign: "center",
+    marginBottom: 46,
   },
+
+  treeContainer: {
+    alignItems: "center",
+    marginBottom: 52,
+  },
+
+  button: {
+    backgroundColor: Colors.primary,
+    borderRadius: 18,
+    paddingVertical: 18,
+    alignItems: "center",
+  },
+
+  buttonText: {
+    ...Typography.button,
+    color: "white",
+  },
+
 });

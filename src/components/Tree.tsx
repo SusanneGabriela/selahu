@@ -1,53 +1,34 @@
 import { StyleSheet, Text, View } from "react-native";
 
-type TreeProps = {
+type Props = {
   votes: number;
 };
 
-function getTree(votes: number) {
-  if (votes >= 500) {
-    return {
-      emoji: "🌲",
-      stage: "Mature Tree",
-    };
+export default function Tree({ votes }: Props) {
+  let stage = "Seed";
+  let emoji = "🌰";
+
+  if (votes >= 30) {
+    stage = "Sprout";
+    emoji = "🌱";
   }
 
-  if (votes >= 150) {
-    return {
-      emoji: "🌳",
-      stage: "Young Tree",
-    };
+  if (votes >= 100) {
+    stage = "Young Tree";
+    emoji = "🌿";
   }
 
-  if (votes >= 50) {
-    return {
-      emoji: "🌿",
-      stage: "Growing Plant",
-    };
+  if (votes >= 365) {
+    stage = "Tree";
+    emoji = "🌳";
   }
-
-  if (votes >= 10) {
-    return {
-      emoji: "🌱",
-      stage: "Sprout",
-    };
-  }
-
-  return {
-    emoji: "🌰",
-    stage: "Seed",
-  };
-}
-
-export default function Tree({ votes }: TreeProps) {
-  const tree = getTree(votes);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.emoji}>{tree.emoji}</Text>
+      <Text style={styles.emoji}>{emoji}</Text>
 
       <Text style={styles.stage}>
-        {tree.stage}
+        {stage}
       </Text>
 
       <Text style={styles.votes}>
@@ -60,23 +41,22 @@ export default function Tree({ votes }: TreeProps) {
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    marginVertical: 32,
   },
 
   emoji: {
-    fontSize: 90,
+    fontSize: 96,
+    marginBottom: 20,
   },
 
   stage: {
-    marginTop: 10,
-    fontSize: 22,
+    fontSize: 32,
     fontWeight: "700",
     color: "#173F2A",
+    marginBottom: 8,
   },
 
   votes: {
-    marginTop: 6,
-    fontSize: 16,
-    color: "#666",
+    fontSize: 18,
+    color: "#7A7A7A",
   },
 });

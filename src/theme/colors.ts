@@ -5,15 +5,17 @@ export const Colors = {
 
   primary: "#1E4D37",
 
-  primaryLight: "#E8F0EA",
+  secondary: "#6B6B6B",
 
-  text: "#203228",
+  text: "#1C1C1C",
 
-  textSecondary: "#68756B",
+  muted: "#8D8D8D",
 
-  border: "#E5E6E2",
+  border: "#ECE8DF",
 
-  success: "#4C8B5F",
+  success: "#4C8C4A",
 
-  danger: "#C74B50",
+  danger: "#D9534F",
+
+  shadow: "rgba(0,0,0,0.08)",
 };
