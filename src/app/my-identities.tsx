@@ -1,81 +1,80 @@
 import { router } from "expo-router";
 import {
-  FlatList,
   Pressable,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
 
-import { COLORS } from "../constants/colors";
-import { TYPOGRAPHY } from "../constants/typography";
 import { useIdentities } from "../context/IdentityContext";
 
-export default function MyIdentitiesScreen() {
-  const {
-    identities,
-    selectIdentity,
-  } = useIdentities();
+import { Colors } from "../theme/colors";
+import { Spacing } from "../theme/spacing";
+import { Typography } from "../theme/typography";
 
-  function handleSelect(id: string) {
-    selectIdentity(id);
-    router.push("/journey");
-  }
+export default function MyIdentitiesScreen() {
+  const { identities } = useIdentities();
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.page}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         <Text style={styles.title}>
           My Identities
         </Text>
 
         <Text style={styles.subtitle}>
-          Choose the person you want to become today.
+          The people you are becoming.
         </Text>
 
-        <View style={styles.divider} />
+        {identities.map((identity) => (
+          <Pressable
+            key={identity.id}
+            style={styles.card}
+            onPress={() =>
+              router.push(`/detail/${identity.id}`)
+            }
+          >
+            <View style={styles.row}>
+              <Text style={styles.icon}>🌱</Text>
 
-        <FlatList
-          data={identities}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.list}
-          renderItem={({ item }) => (
-            <Pressable
-              style={styles.card}
-              onPress={() => handleSelect(item.id)}
-            >
-              <Text style={styles.name}>
-                {item.name}
-              </Text>
+              <View style={styles.textContainer}>
+                <Text style={styles.name}>
+                  {identity.name}
+                </Text>
 
-              <Text style={styles.vision}>
-                {item.vision || "No vision yet."}
-              </Text>
+                <Text
+                  style={styles.vision}
+                  numberOfLines={2}
+                >
+                  {identity.vision}
+                </Text>
+              </View>
+            </View>
 
+            <View style={styles.footer}>
               <Text style={styles.votes}>
-                {item.votes} vote{item.votes === 1 ? "" : "s"}
+                {identity.votes} Lifetime Votes
               </Text>
-            </Pressable>
-          )}
-          ListEmptyComponent={
-            <Text style={styles.empty}>
-              You haven't created an identity yet.
-            </Text>
-          }
-        />
-
-        <View style={styles.divider} />
+            </View>
+          </Pressable>
+        ))}
 
         <Pressable
-          onPress={() => router.push("/new-identity")}
+          style={styles.button}
+          onPress={() =>
+            router.push("/new-identity")
+          }
         >
-          <Text style={styles.button}>
+          <Text style={styles.buttonText}>
             + Create Identity
           </Text>
         </Pressable>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -83,68 +82,91 @@ export default function MyIdentitiesScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.background,
+    backgroundColor: Colors.background,
   },
 
-  page: {
-    flex: 1,
-    paddingHorizontal: 36,
-    paddingTop: 132,
+  content: {
+    padding: Spacing.xl,
+    paddingBottom: 80,
   },
 
   title: {
-    ...TYPOGRAPHY.hero,
-    color: COLORS.primary,
-    marginBottom: 16,
+    ...Typography.hero,
+    color: Colors.primary,
+    marginBottom: 6,
   },
 
   subtitle: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.text,
-    marginBottom: 32,
-  },
-
-  divider: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: COLORS.border,
-    marginBottom: 24,
-  },
-
-  list: {
-    paddingBottom: 24,
+    ...Typography.body,
+    color: Colors.secondary,
+    marginBottom: 36,
   },
 
   card: {
-    marginBottom: 28,
+    backgroundColor: Colors.surface,
+    borderRadius: 22,
+    padding: 22,
+    marginBottom: 18,
+
+    shadowColor: "#000",
+    shadowOpacity: 0.06,
+    shadowRadius: 12,
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+
+    elevation: 3,
+  },
+
+  row: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+  },
+
+  icon: {
+    fontSize: 30,
+    marginRight: 18,
+  },
+
+  textContainer: {
+    flex: 1,
   },
 
   name: {
-    ...TYPOGRAPHY.title,
-    color: COLORS.primary,
-    marginBottom: 8,
+    ...Typography.heading,
+    color: Colors.primary,
+    marginBottom: 6,
   },
 
   vision: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.text,
-    marginBottom: 8,
-    lineHeight: 28,
+    ...Typography.small,
+    color: Colors.secondary,
+    lineHeight: 24,
+  },
+
+  footer: {
+    marginTop: 22,
+    borderTopWidth: 1,
+    borderTopColor: Colors.border,
+    paddingTop: 14,
   },
 
   votes: {
-    ...TYPOGRAPHY.label,
-    color: COLORS.secondaryText,
-  },
-
-  empty: {
-    ...TYPOGRAPHY.body,
-    color: COLORS.secondaryText,
-    textAlign: "center",
-    marginTop: 40,
+    ...Typography.small,
+    color: Colors.success,
   },
 
   button: {
-    ...TYPOGRAPHY.button,
-    color: COLORS.primary,
+    marginTop: 18,
+    backgroundColor: Colors.primary,
+    borderRadius: 18,
+    paddingVertical: 18,
+    alignItems: "center",
+  },
+
+  buttonText: {
+    ...Typography.button,
+    color: "#FFFFFF",
   },
 });

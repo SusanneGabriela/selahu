@@ -7,7 +7,9 @@ import {
   View,
 } from "react-native";
 
-import Tree from "../../components/Tree";
+import HomeHeader from "../../components/HomeHeader";
+import TreeHero from "../../components/TreeHero";
+
 import { useIdentities } from "../../context/IdentityContext";
 
 import { Colors } from "../../theme/colors";
@@ -25,22 +27,9 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
+        <HomeHeader />
 
-        <Text style={styles.greeting}>
-          Good Morning,
-        </Text>
-
-        <Text style={styles.name}>
-          Susanne
-        </Text>
-
-        <Text style={styles.subtitle}>
-          Who do you want to become today?
-        </Text>
-
-        <View style={styles.treeContainer}>
-          <Tree votes={lifetimeVotes} />
-        </View>
+        <TreeHero votes={lifetimeVotes} />
 
         <Pressable
           style={styles.button}
@@ -50,14 +39,12 @@ export default function HomeScreen() {
             Begin Today's Journey
           </Text>
         </Pressable>
-
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     backgroundColor: Colors.background,
@@ -69,31 +56,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.xl,
   },
 
-  greeting: {
-    ...Typography.body,
-    color: Colors.secondary,
-    textAlign: "center",
-  },
-
-  name: {
-    ...Typography.hero,
-    color: Colors.primary,
-    textAlign: "center",
-    marginBottom: Spacing.sm,
-  },
-
-  subtitle: {
-    ...Typography.body,
-    color: Colors.secondary,
-    textAlign: "center",
-    marginBottom: 46,
-  },
-
-  treeContainer: {
-    alignItems: "center",
-    marginBottom: 52,
-  },
-
   button: {
     backgroundColor: Colors.primary,
     borderRadius: 18,
@@ -103,7 +65,6 @@ const styles = StyleSheet.create({
 
   buttonText: {
     ...Typography.button,
-    color: "white",
+    color: "#FFFFFF",
   },
-
 });
