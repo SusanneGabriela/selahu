@@ -22,6 +22,9 @@ export default function TabsLayout() {
         name="index"
         options={{
           title: "Today",
+          tabBarStyle: {
+            display: "none",
+          },
         }}
       />
 
