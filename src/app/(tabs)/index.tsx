@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import {
@@ -15,12 +14,39 @@ import { useIdentities } from "../../context/IdentityContext";
 
 const TREE_IMAGE = require("../../../assets/images/selahu-tree-hero.png");
 
-const BASE_WIDTH = 390;
-const BASE_HEIGHT = 844;
+/*
+ * Reference design:
+ * 390 × 844
+ *
+ * Everything below is calculated from the actual device
+ * dimensions so the composition scales rather than using
+ * fixed screen dimensions.
+ */
+
+const DESIGN_WIDTH = 390;
+const DESIGN_HEIGHT = 844;
 
 export default function HomeScreen() {
   const { identities } = useIdentities();
   const { width, height } = useWindowDimensions();
+
+  /*
+   * Scale from BOTH dimensions.
+   *
+   * This prevents the layout from becoming too large on
+   * short devices and prevents excessive empty space on
+   * tall devices.
+   */
+  const widthScale = width / DESIGN_WIDTH;
+  const heightScale = height / DESIGN_HEIGHT;
+
+  const scale = Math.min(widthScale, heightScale);
+
+  /*
+   * Keep a sensible minimum/maximum scale so typography
+   * remains comfortable on unusual devices.
+   */
+  const s = Math.max(0.82, Math.min(scale, 1.12));
 
   const lifetimeVotes = identities.reduce(
     (total, identity) => total + identity.votes,
@@ -28,23 +54,32 @@ export default function HomeScreen() {
   );
 
   /*
-   * Responsive scaling from the 390 × 844 reference design.
+   * ---------------------------------------------------------
+   * RESPONSIVE DIMENSIONS
+   * ---------------------------------------------------------
    */
-  const scale = width / BASE_WIDTH;
 
-  const s = (value: number) => value * scale;
+  const headerHeight = Math.round(252 * s);
+  const headerPaddingTop = Math.round(55 * s);
 
-  const verticalScale = Math.min(
-    scale,
-    height / BASE_HEIGHT
+  const heroHeight = Math.round(285 * s);
+
+  const buttonWidth = Math.min(
+    Math.round(336 * s),
+    width - Math.round(54 * s)
   );
 
-  const vs = (value: number) => value * verticalScale;
+  const buttonHeight = Math.round(64 * s);
+
+  /*
+   * ---------------------------------------------------------
+   * SCREEN
+   * ---------------------------------------------------------
+   */
 
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.screen}>
-
         {/* =====================================================
             HEADER
         ====================================================== */}
@@ -53,8 +88,8 @@ export default function HomeScreen() {
           style={[
             styles.header,
             {
-              height: vs(252),
-              paddingTop: vs(52),
+              height: headerHeight,
+              paddingTop: headerPaddingTop,
             },
           ]}
         >
@@ -62,8 +97,8 @@ export default function HomeScreen() {
             style={[
               styles.greeting,
               {
-                fontSize: vs(24),
-                lineHeight: vs(29),
+                fontSize: Math.round(24 * s),
+                lineHeight: Math.round(29 * s),
               },
             ]}
           >
@@ -74,9 +109,8 @@ export default function HomeScreen() {
             style={[
               styles.name,
               {
-                fontSize: vs(69),
-                lineHeight: vs(72),
-                marginTop: vs(1),
+                fontSize: Math.round(69 * s),
+                lineHeight: Math.round(72 * s),
               },
             ]}
           >
@@ -87,9 +121,9 @@ export default function HomeScreen() {
             style={[
               styles.question,
               {
-                fontSize: vs(19),
-                lineHeight: vs(25),
-                marginTop: vs(12),
+                fontSize: Math.round(19 * s),
+                lineHeight: Math.round(25 * s),
+                marginTop: Math.round(12 * s),
               },
             ]}
           >
@@ -106,7 +140,7 @@ export default function HomeScreen() {
             styles.hero,
             {
               width,
-              height: vs(285),
+              height: heroHeight,
             },
           ]}
         >
@@ -117,89 +151,75 @@ export default function HomeScreen() {
               styles.heroImage,
               {
                 width,
-                height: vs(330),
-                top: 0,
+                height: heroHeight,
               },
             ]}
           />
 
-          {/* =================================================
-              SUBTLE TOP FADE
+          {/* ===================================================
+              TOP FADE
 
-              Only softens the hard edge where the photograph
-              begins. The tree remains crisp and visible.
-          ================================================== */}
+              Short and subtle.
+
+              The photograph should gently emerge from the
+              cream background rather than having a hard edge.
+          ==================================================== */}
 
           <LinearGradient
             pointerEvents="none"
             colors={[
               "#F8EEDF",
-              "rgba(248,238,223,0.55)",
-              "rgba(248,238,223,0.20)",
-              "rgba(248,238,223,0)",
-            ]}
-            locations={[
-              0,
-              0.20,
-              0.45,
-              0.75,
-            ]}
-            style={[
-              styles.heroTopFade,
-              {
-                height: vs(38),
-              },
-            ]}
-          />
-
-          {/* =================================================
-              BOTTOM FADE
-          ================================================== */}
-
-          <LinearGradient
-            pointerEvents="none"
-            colors={[
-              "rgba(248,238,223,0)",
-              "rgba(248,238,223,0.02)",
-              "rgba(248,238,223,0.06)",
-              "rgba(248,238,223,0.14)",
-              "rgba(248,238,223,0.28)",
-              "rgba(248,238,223,0.48)",
-              "rgba(248,238,223,0.70)",
               "rgba(248,238,223,0.88)",
+              "rgba(248,238,223,0.48)",
+              "rgba(248,238,223,0.14)",
+              "rgba(248,238,223,0)",
+            ]}
+            locations={[0, 0.18, 0.42, 0.68, 1]}
+            style={[
+              styles.topFade,
+              {
+                height: Math.round(52 * s),
+              },
+            ]}
+          />
+
+          {/* ===================================================
+              BOTTOM FADE
+
+              Deliberately short.
+
+              The tree and landscape remain clearly visible.
+          ==================================================== */}
+
+          <LinearGradient
+            pointerEvents="none"
+            colors={[
+              "rgba(248,238,223,0)",
+              "rgba(248,238,223,0.08)",
+              "rgba(248,238,223,0.22)",
+              "rgba(248,238,223,0.55)",
               "#F8EEDF",
             ]}
-            locations={[
-              0,
-              0.18,
-              0.32,
-              0.46,
-              0.60,
-              0.72,
-              0.84,
-              0.94,
-              1,
-            ]}
+            locations={[0, 0.25, 0.48, 0.76, 1]}
             style={[
-              styles.heroFade,
+              styles.bottomFade,
               {
-                height: vs(125),
+                height: Math.round(38 * s),
               },
             ]}
           />
         </View>
 
         {/* =====================================================
-            LIFETIME VOTES
+            VOTES
         ====================================================== */}
 
         <View
           style={[
             styles.votes,
             {
-              width,
-              height: vs(92),
-              paddingTop: vs(8),
+              height: Math.round(92 * s),
+              paddingTop: Math.round(8 * s),
             },
           ]}
         >
@@ -207,21 +227,20 @@ export default function HomeScreen() {
             style={[
               styles.votesLabel,
               {
-                fontSize: vs(12),
-                letterSpacing: vs(3.2),
+                fontSize: Math.round(12 * s),
               },
             ]}
           >
-            LIFETIME VOTES
+            L I F E T I M E   V O T E S
           </Text>
 
           <Text
             style={[
               styles.votesNumber,
               {
-                fontSize: vs(57),
-                lineHeight: vs(62),
-                marginTop: vs(1),
+                fontSize: Math.round(57 * s),
+                lineHeight: Math.round(62 * s),
+                marginTop: Math.round(1 * s),
               },
             ]}
           >
@@ -234,80 +253,28 @@ export default function HomeScreen() {
         ====================================================== */}
 
         <Pressable
-          onPress={() => router.push("/journey")}
-          style={({ pressed }) => [
+          style={[
             styles.button,
             {
-              width: Math.min(
-                s(336),
-                width - s(32)
-              ),
-              height: vs(64),
-              borderRadius: vs(20),
-              marginTop: vs(8),
-              paddingHorizontal: s(10),
-              transform: [
-                {
-                  scale: pressed ? 0.985 : 1,
-                },
-              ],
+              width: buttonWidth,
+              height: buttonHeight,
+              marginTop: Math.round(8 * s),
+              borderRadius: Math.round(20 * s),
             },
           ]}
+          onPress={() => router.push("/journey")}
         >
-          {/* LEFT LEAF */}
-
-          <View
-            style={[
-              styles.leafContainer,
-              {
-                width: s(48),
-                height: vs(48),
-              },
-            ]}
-          >
-            <Ionicons
-              name="leaf-outline"
-              size={vs(29)}
-              color="#E7B84B"
-              style={styles.leaf}
-            />
-          </View>
-
-          {/* BUTTON TEXT */}
-
           <Text
-            numberOfLines={1}
-            adjustsFontSizeToFit
-            minimumFontScale={0.82}
             style={[
               styles.buttonText,
               {
-                fontSize: vs(20),
+                fontSize: Math.round(20 * s),
               },
             ]}
           >
             Begin Today's Journey
           </Text>
-
-          {/* RIGHT ARROW */}
-
-          <Text
-            style={[
-              styles.arrow,
-              {
-                width: s(42),
-                fontSize: vs(34),
-              },
-            ]}
-          >
-            →
-          </Text>
         </Pressable>
-
-        {/* Bottom breathing room */}
-
-        <View style={styles.bottomSpacer} />
-
       </View>
     </SafeAreaView>
   );
@@ -318,10 +285,9 @@ export default function HomeScreen() {
 ============================================================= */
 
 const styles = StyleSheet.create({
-
-  /* =========================================================
+  /* ---------------------------------------------------------
      SCREEN
-  ========================================================= */
+  --------------------------------------------------------- */
 
   safeArea: {
     flex: 1,
@@ -330,15 +296,14 @@ const styles = StyleSheet.create({
 
   screen: {
     flex: 1,
-    width: "100%",
     backgroundColor: "#F8EEDF",
     alignItems: "center",
     overflow: "hidden",
   },
 
-  /* =========================================================
+  /* ---------------------------------------------------------
      HEADER
-  ========================================================= */
+  --------------------------------------------------------- */
 
   header: {
     width: "100%",
@@ -358,6 +323,7 @@ const styles = StyleSheet.create({
     color: "#073D2B",
     textAlign: "center",
     includeFontPadding: false,
+    marginTop: 1,
   },
 
   question: {
@@ -367,9 +333,9 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
   },
 
-  /* =========================================================
+  /* ---------------------------------------------------------
      HERO
-  ========================================================= */
+  --------------------------------------------------------- */
 
   hero: {
     position: "relative",
@@ -380,37 +346,35 @@ const styles = StyleSheet.create({
   heroImage: {
     position: "absolute",
     left: 0,
-  },
-
-  /* =========================================================
-     TOP IMAGE FADE
-  ========================================================= */
-
-  heroTopFade: {
-    position: "absolute",
-    left: 0,
-    right: 0,
     top: 0,
-    zIndex: 2,
   },
 
-  /* =========================================================
-     BOTTOM IMAGE FADE
-  ========================================================= */
-
-  heroFade: {
+  /*
+   * Soft transition INTO the photograph.
+   */
+  topFade: {
     position: "absolute",
+    top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
-    zIndex: 2,
   },
 
-  /* =========================================================
+  /*
+   * Very restrained transition OUT of the photograph.
+   */
+  bottomFade: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+
+  /* ---------------------------------------------------------
      VOTES
-  ========================================================= */
+  --------------------------------------------------------- */
 
   votes: {
+    width: "100%",
     alignItems: "center",
     backgroundColor: "#F8EEDF",
   },
@@ -420,6 +384,7 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     color: "#073D2B",
     textAlign: "center",
+    letterSpacing: 0.5,
   },
 
   votesNumber: {
@@ -429,14 +394,15 @@ const styles = StyleSheet.create({
     includeFontPadding: false,
   },
 
-  /* =========================================================
+  /* ---------------------------------------------------------
      BUTTON
-  ========================================================= */
+  --------------------------------------------------------- */
 
   button: {
-    flexDirection: "row",
-    alignItems: "center",
     backgroundColor: "#063D2A",
+
+    alignItems: "center",
+    justifyContent: "center",
 
     shadowColor: "#000000",
 
@@ -451,54 +417,10 @@ const styles = StyleSheet.create({
     elevation: 7,
   },
 
-  /* =========================================================
-     LEAF
-  ========================================================= */
-
-  leafContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  leaf: {
-    transform: [
-      {
-        rotate: "-12deg",
-      },
-    ],
-  },
-
-  /* =========================================================
-     BUTTON TEXT
-  ========================================================= */
-
   buttonText: {
-    flex: 1,
     fontFamily: "CormorantGaramond-Regular",
     color: "#F8F3EA",
     textAlign: "center",
     includeFontPadding: false,
-  },
-
-  /* =========================================================
-     ARROW
-  ========================================================= */
-
-  arrow: {
-    fontFamily: "System",
-    fontWeight: "300",
-    color: "#FFFFFF",
-    textAlign: "right",
-    includeFontPadding: false,
-  },
-
-  /* =========================================================
-     BOTTOM SPACE
-  ========================================================= */
-
-  bottomSpacer: {
-    flex: 1,
-    backgroundColor: "#F8EEDF",
-    width: "100%",
   },
 });
